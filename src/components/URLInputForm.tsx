@@ -308,7 +308,7 @@ export default function URLInputForm() {
         className="mt-6 text-center"
       >
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          Get comprehensive insights into your website's performance, SEO, and security
+          Get comprehensive insights into your website&apos;s performance, SEO, and security
         </p>
       </motion.div>
     </motion.div>

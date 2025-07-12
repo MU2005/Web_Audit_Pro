@@ -14,6 +14,7 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+  TooltipItem,
 } from 'chart.js';
 import { Line, Bar, Radar, Doughnut } from 'react-chartjs-2';
 import { TrendingUp, Zap, Shield, Eye, Target } from "lucide-react";
@@ -133,7 +134,11 @@ export default function ChartDisplay({ auditData }: ChartDisplayProps) {
     plugins: {
       legend: { display: false },
       title: { display: false },
-      tooltip: { callbacks: { label: (ctx: any) => `${ctx.dataset.label}: ${ctx.parsed.y}` } },
+      tooltip: { 
+        callbacks: { 
+          label: (ctx: TooltipItem<'bar'>) => `${ctx.dataset.label}: ${ctx.parsed.y}` 
+        } 
+      },
     },
     scales: {
       y: { beginAtZero: true, grid: { color: '#E5E7EB' }, ticks: { color: '#6B7280' } },
@@ -248,24 +253,28 @@ export default function ChartDisplay({ auditData }: ChartDisplayProps) {
         ))}
       </div>
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        {stats.map(({ label, value, color, Icon }) => (
-          <div key={label} className="flex items-center space-x-3 bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700">
-            <Icon className={`w-5 h-5 ${color}`} />
-            <div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">{label}</div>
-              <div className={`text-lg font-bold ${color}`}>{value} <span className="text-xs text-gray-400">/100</span></div>
-          </div>
-          </div>
-        ))}
-        </div>
-
-      {/* Chart Card */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+      {/* Chart Container */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <div className="h-80">
           {chartComponents[activeChart]}
         </div>
+      </div>
+
+      {/* Stats Row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        {stats.map((stat, index) => (
+          <div key={index} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{stat.label}</p>
+                <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
+              </div>
+              <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                <stat.Icon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

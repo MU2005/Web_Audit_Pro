@@ -1,6 +1,6 @@
 "use client";
 
-import { TrendingUp, TrendingDown, Minus, Zap, Target, Shield, Eye } from "lucide-react";
+import { TrendingUp, Zap, Target, Shield, Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface ScoreCardProps {

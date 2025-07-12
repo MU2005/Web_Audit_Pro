@@ -7,9 +7,6 @@ import {
   Zap, 
   Shield, 
   Search, 
-  TrendingUp, 
-  Globe, 
-  BarChart3, 
   ArrowRight,
   CheckCircle,
   Star,
@@ -50,7 +47,7 @@ export default function HomePage() {
   ];
 
   const stats = [
-    { number: "10K+", label: "Websites Audited", icon: Globe },
+    { number: "10K+", label: "Websites Audited", icon: Users },
     { number: "99.9%", label: "Accuracy Rate", icon: CheckCircle },
     { number: "24/7", label: "Available", icon: Clock },
     { number: "50K+", label: "Happy Users", icon: Users }
@@ -68,7 +65,7 @@ export default function HomePage() {
       name: "Michael Chen",
       role: "SEO Specialist",
       company: "GrowthLab",
-      content: "The most comprehensive web auditing tool I've ever used. Highly recommended!",
+      content: "The most comprehensive web auditing tool I&apos;ve ever used. Highly recommended!",
       rating: 5
     }
   ];
@@ -126,7 +123,7 @@ export default function HomePage() {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto font-inter leading-relaxed"
             >
-              Analyze your website's performance, SEO, and security with our comprehensive 
+              Analyze your website&apos;s performance, SEO, and security with our comprehensive 
               auditing tool. Get detailed insights and actionable recommendations.
             </motion.p>
 
@@ -182,7 +179,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <AnimatePresence>
-              {features.map((feature, index) => (
+              {features.map((feature) => (
                 <motion.div
                   key={feature.title}
                   initial={{ opacity: 0, y: 40 }}
@@ -271,7 +268,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-gray-300 mb-6 leading-relaxed">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </p>
                 <div>
                   <div className="font-semibold text-white">

@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import AuditSummaryHeader from "../../components/AuditSummaryHeader";
+import Link from "next/link";
 import ScoreCard from "../../components/ScoreCard";
 import ChartDisplay from "../../components/ChartDisplay";
 import IssueList from "../../components/IssueList";
-import { BarChart3, Globe, MonitorSmartphone, CalendarDays, Share2, Copy, RefreshCw } from "lucide-react";
+import { BarChart3, CalendarDays, Share2, Copy, RefreshCw } from "lucide-react";
 import { ToastContainer, ToastProps } from "../../components/Toast";
 
 // Define the audit result interface
@@ -58,7 +58,7 @@ export default function ResultsPage() {
         // If no stored audit, show error
         setError('No audit data found. Please start a new audit.');
         setLoading(false);
-      } catch (error) {
+      } catch {
         setError('Failed to load audit data');
         setLoading(false);
       }
@@ -86,12 +86,12 @@ export default function ResultsPage() {
           </div>
           <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Error Loading Results</h3>
           <p className="text-gray-600 dark:text-gray-400 mb-4">{error || 'No audit data available'}</p>
-          <a 
+          <Link 
             href="/" 
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
           >
             Start New Audit
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -101,7 +101,6 @@ export default function ResultsPage() {
   const { scores, url, device, timestamp } = auditData;
   const overallScore = Math.round((scores.performance + scores.seo + scores.security + scores.accessibility) / 4);
   const deviceLabel = device === 'mobile' ? 'Mobile' : 'Desktop';
-  const deviceIcon = device === 'mobile' ? <MonitorSmartphone className="w-5 h-5 inline-block mr-1" /> : <MonitorSmartphone className="w-5 h-5 inline-block mr-1" />;
 
   const addToast = (toast: Omit<ToastProps, 'id' | 'onDismiss'>) => {
     const id = Math.random().toString(36).substr(2, 9);
@@ -128,8 +127,8 @@ export default function ResultsPage() {
         await navigator.clipboard.writeText(window.location.href);
         addToast({ type: 'success', title: 'Link Copied!', message: 'Audit link copied to clipboard.' });
       }
-    } catch (error) {
-      console.error('Share failed:', error);
+    } catch {
+      console.error('Share failed');
       addToast({ type: 'error', title: 'Share Failed', message: 'Please try again.' });
     }
   };
@@ -151,8 +150,8 @@ Generated: ${new Date(timestamp).toLocaleString()}
       
       await navigator.clipboard.writeText(resultsText);
       addToast({ type: 'success', title: 'Results Copied!', message: 'Audit results copied to clipboard.' });
-    } catch (error) {
-      console.error('Copy failed:', error);
+    } catch {
+      console.error('Copy failed');
       addToast({ type: 'error', title: 'Copy Failed', message: 'Please try again.' });
     }
   };
@@ -169,7 +168,6 @@ Generated: ${new Date(timestamp).toLocaleString()}
             <div>
               <div className="text-lg font-bold text-gray-900 dark:text-white break-all">{url}</div>
               <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-1">
-                {deviceIcon}
                 <span>{deviceLabel}</span>
                 <CalendarDays className="w-4 h-4 ml-4 mr-1" />
                 <span suppressHydrationWarning>{new Date(timestamp).toLocaleString()}</span>

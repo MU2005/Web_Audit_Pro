@@ -78,10 +78,9 @@ export default function Dashboard() {
           {/* Navigation */}
           <nav className="flex-1 px-4 py-6 space-y-2">
             {menuItems.map((item, index) => (
-              <a
+              <button
                 key={index}
-                href="#"
-                className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
+                className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
                   item.active
                     ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -89,7 +88,7 @@ export default function Dashboard() {
               >
                 <item.icon className="w-5 h-5" />
                 {sidebarOpen && <span className="font-medium">{item.label}</span>}
-              </a>
+              </button>
             ))}
           </nav>
 
@@ -117,7 +116,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-              <p className="text-gray-600">Welcome back! Here's what's happening with your audits.</p>
+              <p className="text-gray-600">Welcome back! Here&apos;s what&apos;s happening with your audits.</p>
             </div>
             <div className="flex items-center space-x-4">
               <button className="p-2 text-gray-400 hover:text-gray-600 relative">

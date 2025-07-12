@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { 
   Shield, 
   Zap, 
@@ -184,7 +185,7 @@ export default function AboutSection() {
         <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Get in Touch</h2>
         <p className="text-gray-600 dark:text-gray-300 mb-6">
           Have questions about WebAudit Pro or need help with your website optimization? 
-          We'd love to hear from you!
+          We&apos;d love to hear from you!
         </p>
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
           <a 
@@ -193,12 +194,12 @@ export default function AboutSection() {
           >
             Contact Us
           </a>
-          <a 
+          <Link 
             href="/"
             className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-center"
           >
             Start Auditing
-          </a>
+          </Link>
         </div>
       </div>
     </div>
