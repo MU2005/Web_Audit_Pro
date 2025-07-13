@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import Header from "../components/Header";
+import LayoutWrapper from "../components/LayoutWrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -29,11 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${poppins.variable} antialiased bg-gray-50 dark:bg-gray-900 transition-colors`}>
-        <Header />
-        <main className="min-h-screen">
+      <body className={`${inter.variable} ${poppins.variable} antialiased transition-colors`}>
+        <LayoutWrapper>
           {children}
-        </main>
+        </LayoutWrapper>
       </body>
     </html>
   );

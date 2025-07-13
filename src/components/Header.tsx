@@ -2,24 +2,21 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { 
   Sun, 
   Moon, 
-  Menu, 
-  X,
-  BarChart3,
-  GaugeCircle,
-  Clock,
-  Info
+  Menu,
+  BarChart3
 } from "lucide-react";
 
-export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+
+export default function Header({ onMenuClick }: HeaderProps) {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const pathname = usePathname();
 
   // Initialize theme from localStorage or system preference
   useEffect(() => {
@@ -44,13 +41,6 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const navigation = [
-    { name: "Home", href: "/", icon: BarChart3 },
-    { name: "Results", href: "/results", icon: GaugeCircle },
-    { name: "History", href: "/history", icon: Clock },
-    { name: "About", href: "/about", icon: Info },
-  ];
 
   const toggleTheme = () => {
     const newTheme = !isDarkMode;
@@ -94,42 +84,6 @@ export default function Header() {
             </Link>
           </motion.div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <motion.div
-                  key={item.name}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link
-                    href={item.href}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 relative group ${
-                      isActive
-                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                    }`}
-                  >
-                    <item.icon className={`w-4 h-4 transition-colors duration-300 ${
-                      isActive ? 'text-emerald-500' : 'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'
-                    }`} />
-                    <span>{item.name}</span>
-                    {!isActive && (
-                      <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 origin-left"
-                        initial={{ scaleX: 0 }}
-                        whileHover={{ scaleX: 1 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    )}
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </nav>
-
           {/* Right Side Controls */}
           <div className="flex items-center space-x-3">
             {/* Theme Toggle */}
@@ -145,58 +99,16 @@ export default function Header() {
 
             {/* Mobile Menu Button */}
             <motion.button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={onMenuClick}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="md:hidden p-2.5 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300"
+              className="lg:hidden p-2.5 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <Menu className="w-5 h-5" />
             </motion.button>
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden overflow-hidden"
-            >
-              <div className="px-2 pt-2 pb-4 space-y-1 border-t border-gray-200 dark:border-gray-700">
-                {navigation.map((item, index) => {
-                  const isActive = pathname === item.href;
-                  return (
-                    <motion.div
-                      key={item.name}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.3 }}
-                    >
-                      <Link
-                        href={item.href}
-                        className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
-                          isActive
-                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                            : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
-                        }`}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <item.icon className={`w-5 h-5 transition-colors duration-300 ${
-                          isActive ? 'text-emerald-500' : 'text-gray-400'
-                        }`} />
-                        <span>{item.name}</span>
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </motion.header>
   );
