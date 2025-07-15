@@ -8,7 +8,6 @@ import {
   Eye, 
   ArrowRight,
   CheckCircle,
-  Star,
   Globe,
   Clock,
   BarChart3
@@ -102,7 +101,7 @@ export default function HomePage() {
               className="mt-6 text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
             >
               Professional web auditing tool that analyzes performance, SEO, security, and accessibility. 
-              Get actionable insights to improve your website's success.
+              Get actionable insights to improve your website&apos;s success.
             </motion.p>
 
             {/* CTA Section */}
@@ -152,7 +151,7 @@ export default function HomePage() {
               Comprehensive <span className="gradient-text">Web Analysis</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our advanced auditing tool provides detailed insights across all critical aspects of your website's performance and user experience.
+              Our advanced auditing tool provides detailed insights across all critical aspects of your website&apos;s performance and user experience.
             </p>
           </motion.div>
 
@@ -163,7 +162,7 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
-            {features.map((feature, index) => (
+            {features.map((feature) => (
               <motion.div
                 key={feature.title}
                 variants={itemVariants}
@@ -205,12 +204,12 @@ export default function HomePage() {
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {benefits.map((benefit, index) => (
+                {benefits.map((benefit) => (
                   <motion.div
                     key={benefit}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    transition={{ duration: 0.6, delay: benefits.indexOf(benefit) * 0.1 }}
                     className="flex items-center space-x-3"
                   >
                     <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
@@ -290,7 +289,7 @@ export default function HomePage() {
               Ready to Optimize Your Website?
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Get instant insights into your website's performance, SEO, security, and accessibility. 
+              Get instant insights into your website&apos;s performance, SEO, security, and accessibility. 
               Start your free audit today and take your website to the next level.
             </p>
             <motion.div

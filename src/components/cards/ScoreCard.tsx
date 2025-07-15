@@ -41,12 +41,6 @@ export default function ScoreCard({
     return { text: "Needs Improvement", icon: XCircle, color: "text-error" };
   };
 
-  const getScoreBackground = (score: number) => {
-    if (score >= 90) return "from-success/20 to-success/10";
-    if (score >= 70) return "from-warning/20 to-warning/10";
-    return "from-error/20 to-error/10";
-  };
-
   const status = getScoreStatus(score);
   const StatusIcon = status.icon;
 

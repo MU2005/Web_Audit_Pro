@@ -3,13 +3,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  ChevronDown, 
   ChevronRight,
   AlertTriangle,
   AlertCircle,
   Info,
-  CheckCircle,
-  Clock,
   Zap,
   Eye,
   Shield,

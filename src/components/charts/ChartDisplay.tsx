@@ -17,7 +17,6 @@ import {
   TooltipItem,
 } from 'chart.js';
 import { Line, Bar, Radar, Doughnut } from 'react-chartjs-2';
-import { TrendingUp, Zap, Shield, Eye, Target } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,

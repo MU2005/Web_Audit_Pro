@@ -54,7 +54,7 @@ export default function Footer() {
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
               Comprehensive web auditing tool for SEO, performance, and security analysis. 
-              Get instant insights to improve your website's performance and user experience.
+              Get instant insights to improve your website&apos;s performance and user experience.
             </p>
           </motion.div>
 

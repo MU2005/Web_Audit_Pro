@@ -8,7 +8,6 @@ import {
   CheckCircle, 
   AlertCircle,
   Loader2,
-  ExternalLink
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -77,7 +76,7 @@ export default function URLInputForm() {
       
       // Navigate to results page with URL parameter
       router.push(`/results?url=${encodeURIComponent(normalizedUrl)}`);
-    } catch (err) {
+    } catch {
       setError("Failed to start audit. Please try again.");
     } finally {
       setIsLoading(false);

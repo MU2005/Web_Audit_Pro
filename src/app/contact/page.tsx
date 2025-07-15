@@ -43,7 +43,7 @@ export default function ContactPage() {
       await new Promise(resolve => setTimeout(resolve, 2000));
       setSubmitStatus("success");
       setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (error) {
+    } catch {
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -73,7 +73,7 @@ export default function ContactPage() {
               Get in <span className="gradient-text">Touch</span>
             </h1>
             <p className="text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Have questions, suggestions, or want to collaborate? We'd love to hear from you.
+              Have questions, suggestions, or want to collaborate? We&apos;d love to hear from you.
             </p>
           </motion.div>
         </div>
@@ -204,7 +204,7 @@ export default function ContactPage() {
                     >
                       <CheckCircle className="w-5 h-5 text-success" />
                       <span className="text-success font-medium">
-                        Message sent successfully! We'll get back to you soon.
+                        Message sent successfully! We&apos;ll get back to you soon.
                       </span>
                     </motion.div>
                   )}
@@ -235,11 +235,11 @@ export default function ContactPage() {
             >
               <div>
                 <h2 className="text-3xl lg:text-4xl font-display font-bold text-foreground mb-8">
-                  Let's <span className="gradient-text">Connect</span>
+                  Let&apos;s <span className="gradient-text">Connect</span>
                 </h2>
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">
                   Whether you have a question about WebAudit Pro, want to report a bug, 
-                  or just want to say hello, we're here to help.
+                  or just want to say hello, we&apos;re here to help.
                 </p>
               </div>
 

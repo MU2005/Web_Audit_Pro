@@ -114,7 +114,7 @@ export default function AboutPage() {
               </p>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 By providing comprehensive analysis tools that were previously only available 
-                to enterprise clients, we're helping businesses of all sizes improve their 
+                to enterprise clients, we&apos;re helping businesses of all sizes improve their 
                 online presence and achieve better results.
               </p>
               
@@ -200,7 +200,7 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
-            {features.map((feature, index) => (
+            {features.map((feature) => (
               <motion.div
                 key={feature.title}
                 variants={itemVariants}
@@ -248,7 +248,7 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-4 gap-6"
           >
-            {techStack.map((tech, index) => (
+            {techStack.map((tech) => (
               <motion.div
                 key={tech.name}
                 variants={itemVariants}
