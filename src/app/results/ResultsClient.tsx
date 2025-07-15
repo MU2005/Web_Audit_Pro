@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import ScoreCard from "../../components/ScoreCard";
-import ChartDisplay from "../../components/ChartDisplay";
-import IssueList from "../../components/IssueList";
+import { ScoreCard, scoreCardConfigs } from "../../components/cards";
+import { ChartDisplay } from "../../components/charts";
+import { IssueList } from "../../components/ui";
 import { BarChart3, CalendarDays, Share2, Copy, RefreshCw } from "lucide-react";
-import { ToastContainer, ToastProps } from "../../components/Toast";
+import { ToastContainer, ToastProps } from "../../components/ui";
 
 // Define the audit result interface
 interface AuditResult {
@@ -23,11 +23,13 @@ interface AuditResult {
   };
   issues: Array<{
     id: string;
-    type: 'error' | 'warning' | 'info' | 'success';
+    type: 'error' | 'warning' | 'info';
     title: string;
     description: string;
-    category: string;
+    category: 'performance' | 'seo' | 'security' | 'accessibility';
     priority: 'high' | 'medium' | 'low';
+    impact?: string;
+    suggestion?: string;
   }>;
   metrics: {
     firstContentfulPaint: number;
@@ -55,8 +57,69 @@ export default function ResultsClient() {
           return;
         }
         
-        // If no stored audit, show error
-        setError('No audit data found. Please start a new audit.');
+        // Generate sample audit data if no stored audit
+        const sampleAudit: AuditResult = {
+          id: 'sample-audit-' + Date.now(),
+          url: 'example.com',
+          device: 'desktop',
+          timestamp: new Date().toISOString(),
+          scores: {
+            performance: 85,
+            seo: 92,
+            security: 78,
+            accessibility: 88
+          },
+          issues: [
+            {
+              id: 'issue-1',
+              type: 'warning',
+              title: 'Slow First Contentful Paint',
+              description: 'Your website takes too long to display the first content. Consider optimizing images and reducing render-blocking resources.',
+              category: 'performance',
+              priority: 'medium',
+              impact: 'Affects user experience and Core Web Vitals',
+              suggestion: 'Optimize images, minimize CSS/JS, use CDN'
+            },
+            {
+              id: 'issue-2',
+              type: 'error',
+              title: 'Missing Meta Description',
+              description: 'Your page is missing a meta description tag, which is important for SEO.',
+              category: 'seo',
+              priority: 'high',
+              impact: 'Reduces search engine visibility',
+              suggestion: 'Add a compelling meta description under 160 characters'
+            },
+            {
+              id: 'issue-3',
+              type: 'warning',
+              title: 'Insecure HTTP Connection',
+              description: 'Your website is not using HTTPS, which can affect security and SEO.',
+              category: 'security',
+              priority: 'high',
+              impact: 'Security vulnerability and SEO penalty',
+              suggestion: 'Implement SSL certificate and redirect HTTP to HTTPS'
+            },
+            {
+              id: 'issue-4',
+              type: 'info',
+              title: 'Missing Alt Text on Images',
+              description: 'Some images lack alt text, which affects accessibility for screen readers.',
+              category: 'accessibility',
+              priority: 'medium',
+              impact: 'Reduces accessibility for visually impaired users',
+              suggestion: 'Add descriptive alt text to all images'
+            }
+          ],
+          metrics: {
+            firstContentfulPaint: 1.8,
+            largestContentfulPaint: 2.4,
+            cumulativeLayoutShift: 0.12,
+            totalBlockingTime: 180
+          }
+        };
+        
+        setAuditData(sampleAudit);
         setLoading(false);
       } catch {
         setError('Failed to load audit data');
@@ -201,10 +264,34 @@ Generated: ${new Date(timestamp).toLocaleString()}
 
         {/* Score Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <ScoreCard title="Performance" score={scores.performance} color="blue" />
-          <ScoreCard title="SEO" score={scores.seo} color="green" />
-          <ScoreCard title="Security" score={scores.security} color="red" />
-          <ScoreCard title="Accessibility" score={scores.accessibility} color="purple" />
+          <ScoreCard 
+            title={scoreCardConfigs.performance.title}
+            score={scores.performance}
+            icon={scoreCardConfigs.performance.icon}
+            color={scoreCardConfigs.performance.color}
+            description={scoreCardConfigs.performance.description}
+          />
+          <ScoreCard 
+            title={scoreCardConfigs.seo.title}
+            score={scores.seo}
+            icon={scoreCardConfigs.seo.icon}
+            color={scoreCardConfigs.seo.color}
+            description={scoreCardConfigs.seo.description}
+          />
+          <ScoreCard 
+            title={scoreCardConfigs.security.title}
+            score={scores.security}
+            icon={scoreCardConfigs.security.icon}
+            color={scoreCardConfigs.security.color}
+            description={scoreCardConfigs.security.description}
+          />
+          <ScoreCard 
+            title={scoreCardConfigs.accessibility.title}
+            score={scores.accessibility}
+            icon={scoreCardConfigs.accessibility.icon}
+            color={scoreCardConfigs.accessibility.color}
+            description={scoreCardConfigs.accessibility.description}
+          />
         </div>
 
         {/* Chart & Issues Section */}

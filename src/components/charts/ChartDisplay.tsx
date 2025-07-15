@@ -77,7 +77,7 @@ export default function ChartDisplay({ auditData }: ChartDisplayProps) {
   const scores = auditData?.scores || defaultScores;
   const metrics = auditData?.metrics || defaultMetrics;
 
-  // Chart Data (same as before)
+  // Chart Data
   const radarData = {
     labels: ['Performance', 'SEO', 'Security', 'Accessibility'],
     datasets: [
@@ -207,74 +207,49 @@ export default function ChartDisplay({ auditData }: ChartDisplayProps) {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom' as const, labels: { color: '#374151', usePointStyle: true, padding: 20 } },
+      legend: { position: 'bottom' as const, labels: { color: '#374151', usePointStyle: true } },
       title: { display: false },
     },
   };
-  const chartComponents = {
-    radar: <Radar data={radarData} options={radarOptions} />,
-    bar: <Bar data={barData} options={barOptions} />,
-    line: <Line data={lineData} options={lineOptions} />,
-    doughnut: <Doughnut data={doughnutData} options={doughnutOptions} />,
+
+  const renderChart = () => {
+    switch (activeChart) {
+      case 'radar':
+        return <Radar data={radarData} options={radarOptions} />;
+      case 'bar':
+        return <Bar data={barData} options={barOptions} />;
+      case 'line':
+        return <Line data={lineData} options={lineOptions} />;
+      case 'doughnut':
+        return <Doughnut data={doughnutData} options={doughnutOptions} />;
+      default:
+        return <Radar data={radarData} options={radarOptions} />;
+    }
   };
 
-  // Stats row
-  const stats = [
-    { label: 'Performance', value: scores.performance, color: 'text-blue-600', Icon: Zap },
-    { label: 'SEO', value: scores.seo, color: 'text-green-600', Icon: Target },
-    { label: 'Security', value: scores.security, color: 'text-red-600', Icon: Shield },
-    { label: 'Accessibility', value: scores.accessibility, color: 'text-purple-600', Icon: Eye },
-  ];
-
   return (
-    <div className="h-full">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">Analytics & Visualizations</h3>
-        <div className="flex items-center space-x-2">
-          <TrendingUp className="w-5 h-5 text-blue-500" />
-          <span className="text-sm text-gray-600 dark:text-gray-400">Real-time</span>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Performance Analytics</h3>
+        <div className="flex space-x-1">
+          {chartTabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveChart(tab.key)}
+              className={`px-3 py-1 text-sm rounded-lg transition-colors ${
+                activeChart === tab.key
+                  ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-400'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
-
-      {/* Tabs */}
-      <div className="flex space-x-2 mb-4">
-        {chartTabs.map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveChart(tab.key)}
-            className={`px-4 py-2 rounded-full font-medium text-sm transition-colors border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-              ${activeChart === tab.key
-                ? 'bg-blue-600 text-white shadow'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900/20'}
-            `}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Chart Container */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-        <div className="h-80">
-          {chartComponents[activeChart]}
-        </div>
-      </div>
-
-      {/* Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-        {stats.map((stat, index) => (
-          <div key={index} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{stat.label}</p>
-                <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
-              </div>
-              <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                <stat.Icon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              </div>
-            </div>
-          </div>
-        ))}
+      
+      <div className="h-80">
+        {renderChart()}
       </div>
     </div>
   );

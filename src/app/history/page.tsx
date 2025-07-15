@@ -1,4 +1,4 @@
-import HistoryCard from "../../components/HistoryCard";
+import { HistoryCard } from "../../components/cards";
 
 export default function HistoryPage() {
   // TODO: fetch audit history from API

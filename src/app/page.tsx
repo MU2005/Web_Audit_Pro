@@ -1,308 +1,311 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import URLInputForm from "../components/URLInputForm";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { 
   Zap, 
+  TrendingUp, 
   Shield, 
-  Search, 
+  Eye, 
   ArrowRight,
   CheckCircle,
   Star,
-  Users,
+  Globe,
   Clock,
-  Sparkles
+  BarChart3
 } from "lucide-react";
+import { URLInputForm } from "../components/forms";
 
 export default function HomePage() {
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
   const features = [
     {
-      icon: Zap,
+      icon: TrendingUp,
       title: "Performance Analysis",
-      description: "Lightning-fast insights into your website's speed and optimization opportunities",
-      color: "from-emerald-500 to-teal-500",
-      delay: 0.1
+      description: "Get detailed insights into your website's loading speed, Core Web Vitals, and performance metrics.",
+      color: "from-blue-500 to-cyan-500"
     },
     {
-      icon: Search,
+      icon: Eye,
       title: "SEO Optimization",
-      description: "Comprehensive search engine optimization analysis and recommendations",
-      color: "from-teal-500 to-cyan-500",
-      delay: 0.2
+      description: "Comprehensive SEO analysis including meta tags, structured data, and search engine optimization.",
+      color: "from-green-500 to-emerald-500"
     },
     {
       icon: Shield,
       title: "Security Audit",
-      description: "Advanced security scanning to identify vulnerabilities and threats",
-      color: "from-cyan-500 to-blue-500",
-      delay: 0.3
-    }
-  ];
-
-  const stats = [
-    { number: "10K+", label: "Websites Audited", icon: Users },
-    { number: "99.9%", label: "Accuracy Rate", icon: CheckCircle },
-    { number: "24/7", label: "Available", icon: Clock },
-    { number: "50K+", label: "Happy Users", icon: Users }
-  ];
-
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Digital Marketing Manager",
-      company: "TechCorp",
-      content: "WebAudit Pro transformed our website performance. The insights were invaluable!",
-      rating: 5
+      description: "Identify security vulnerabilities, SSL certificates, and best practices for web security.",
+      color: "from-red-500 to-pink-500"
     },
     {
-      name: "Michael Chen",
-      role: "SEO Specialist",
-      company: "GrowthLab",
-      content: "The most comprehensive web auditing tool I&apos;ve ever used. Highly recommended!",
-      rating: 5
+      icon: BarChart3,
+      title: "Accessibility Check",
+      description: "Ensure your website is accessible to all users with WCAG compliance analysis.",
+      color: "from-purple-500 to-indigo-500"
     }
   ];
 
+  const benefits = [
+    "Instant audit results in seconds",
+    "Comprehensive performance metrics",
+    "Detailed SEO recommendations",
+    "Security vulnerability detection",
+    "Accessibility compliance check",
+    "Export reports as PDF",
+    "Historical audit tracking",
+    "Mobile and desktop analysis"
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6
+      }
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-teal-400/20 to-cyan-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-gradient-to-br from-emerald-400/10 to-teal-500/10 rounded-full blur-3xl animate-pulse delay-1500"></div>
-      </div>
-
-      <div className="relative z-10">
-        {/* Hero Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16"
-        >
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-surface py-20 lg:py-32">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500/10 backdrop-blur-sm rounded-full border border-emerald-500/20 mb-8"
-            >
-              <Sparkles className="w-4 h-4 text-emerald-400" />
-              <span className="text-sm font-medium text-emerald-300">
-                Trusted by 50,000+ professionals
-              </span>
-            </motion.div>
-
-            {/* Main Heading */}
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
+            {/* Main Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white via-emerald-200 to-teal-200 bg-clip-text text-transparent mb-6 font-poppins"
+              transition={{ duration: 0.8 }}
+              className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-tight"
             >
-              Professional
+              <span className="gradient-text">Get Instant</span>
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
-                Web Auditing
-              </span>
+              <span className="text-foreground">Website Audit Reports</span>
             </motion.h1>
 
             {/* Subtitle */}
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto font-inter leading-relaxed"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="mt-6 text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
             >
-              Analyze your website&apos;s performance, SEO, and security with our comprehensive 
-              auditing tool. Get detailed insights and actionable recommendations.
+              Professional web auditing tool that analyzes performance, SEO, security, and accessibility. 
+              Get actionable insights to improve your website's success.
             </motion.p>
 
-            {/* CTA Buttons */}
-            <motion.div 
+            {/* CTA Section */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-10"
             >
-              <button className="group relative px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-emerald-500/25 transform hover:-translate-y-1 transition-all duration-300">
-                <span className="flex items-center gap-2">
-                  Start Free Audit
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </button>
-              
-              <button className="px-8 py-4 border-2 border-gray-600 text-gray-300 font-semibold rounded-xl hover:bg-gray-800/50 transition-all duration-300">
-                Watch Demo
-              </button>
+              <URLInputForm />
+            </motion.div>
+
+            {/* Trust Indicators */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="mt-16 flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground"
+            >
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="w-5 h-5 text-success" />
+                <span>Free to use</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Clock className="w-5 h-5 text-info" />
+                <span>Instant results</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Globe className="w-5 h-5 text-primary" />
+                <span>Global analysis</span>
+              </div>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
+      </section>
 
-        {/* URL Input Form */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="max-w-4xl mx-auto px-4 mb-20"
-        >
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl shadow-2xl border border-gray-700/50 p-8 md:p-12">
-            <URLInputForm />
-          </div>
-        </motion.div>
-
-        {/* Features Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20"
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-poppins">
-              Why Choose WebAudit Pro?
+      {/* Features Section */}
+      <section className="py-20 lg:py-32 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl lg:text-5xl font-display font-bold text-foreground mb-6">
+              Comprehensive <span className="gradient-text">Web Analysis</span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Comprehensive analysis with cutting-edge technology and professional insights
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Our advanced auditing tool provides detailed insights across all critical aspects of your website's performance and user experience.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <AnimatePresence>
-              {features.map((feature) => (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: feature.delay, duration: 0.6 }}
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  className="group relative"
-                >
-                  <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300">
-                    <div className={`w-16 h-16 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                      <feature.icon className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-4 font-poppins">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-300 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </motion.div>
-
-        {/* Stats Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20"
-        >
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-gray-700/50">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.9 + index * 0.1, duration: 0.5 }}
-                  className="text-center"
-                >
-                  <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <stat.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-3xl md:text-4xl font-bold text-white mb-2 font-poppins">
-                    {stat.number}
-                  </div>
-                  <div className="text-gray-300 font-medium">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Testimonials Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.8 }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20"
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-poppins">
-              What Our Users Say
-            </h2>
-            <p className="text-xl text-gray-300">
-              Join thousands of satisfied professionals
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {testimonials.map((testimonial, index) => (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            {features.map((feature, index) => (
               <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, x: index === 0 ? -40 : 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1 + index * 0.1, duration: 0.6 }}
-                className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50"
+                key={feature.title}
+                variants={itemVariants}
+                whileHover={{ y: -8 }}
+                className="group"
               >
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-emerald-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-300 mb-6 leading-relaxed">
-                  &quot;{testimonial.content}&quot;
-                </p>
-                <div>
-                  <div className="font-semibold text-white">
-                    {testimonial.name}
+                <div className="bg-card rounded-2xl p-8 border border-border hover:border-primary/20 transition-all duration-300 hover:shadow-lg">
+                  <div className={`w-16 h-16 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    <feature.icon className="w-8 h-8 text-white" />
                   </div>
-                  <div className="text-gray-400">
-                    {testimonial.role} at {testimonial.company}
-                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-4">
+                    {feature.title}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {feature.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+      </section>
 
-        {/* CTA Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.8 }}
-          className="max-w-4xl mx-auto px-4 text-center mb-20"
-        >
-          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl p-12 text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 font-poppins">
-              Ready to Transform Your Website?
-            </h2>
-            <p className="text-xl mb-8 opacity-90">
-              Get started with your first audit today and see the difference
-            </p>
-            <button className="px-8 py-4 bg-white text-emerald-600 font-semibold rounded-xl hover:bg-gray-100 transition-colors duration-300">
-              Start Your Free Audit
-            </button>
+      {/* Benefits Section */}
+      <section className="py-20 lg:py-32 bg-gradient-surface">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-3xl lg:text-5xl font-display font-bold text-foreground mb-8">
+                Why Choose <span className="gradient-text">WebAudit Pro</span>?
+              </h2>
+              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+                Our professional-grade auditing tool provides comprehensive analysis with actionable insights to help you optimize your website for success.
+              </p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {benefits.map((benefit, index) => (
+                  <motion.div
+                    key={benefit}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="flex items-center space-x-3"
+                  >
+                    <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
+                    <span className="text-foreground">{benefit}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="mt-8"
+              >
+                <button className="btn-primary inline-flex items-center space-x-2">
+                  <span>Start Your Free Audit</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </motion.div>
+            </motion.div>
+
+            {/* Visual */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="relative"
+            >
+              <div className="bg-card rounded-2xl p-8 border border-border shadow-xl">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center">
+                        <Zap className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground">Performance Score</h3>
+                        <p className="text-sm text-muted-foreground">Core Web Vitals</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-success">95</div>
+                      <div className="text-xs text-muted-foreground">Excellent</div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">LCP</span>
+                      <span className="text-sm font-medium text-foreground">1.2s</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">FID</span>
+                      <span className="text-sm font-medium text-foreground">45ms</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">CLS</span>
+                      <span className="text-sm font-medium text-foreground">0.08</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 lg:py-32 bg-gradient-primary">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl lg:text-5xl font-display font-bold text-white mb-6">
+              Ready to Optimize Your Website?
+            </h2>
+            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              Get instant insights into your website's performance, SEO, security, and accessibility. 
+              Start your free audit today and take your website to the next level.
+            </p>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <button className="bg-white text-primary px-8 py-4 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center space-x-2">
+                <Zap className="w-5 h-5" />
+                <span>Start Free Audit Now</span>
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

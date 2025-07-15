@@ -198,7 +198,7 @@ export default function AboutSection() {
             href="/"
             className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-center"
           >
-            Start Auditing
+            Back to Home
           </Link>
         </div>
       </div>
