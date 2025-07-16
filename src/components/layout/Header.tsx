@@ -12,7 +12,6 @@ import {
   Shield,
   Eye,
   TrendingUp,
-  Bell,
   Star,
   Clock,
   Activity
@@ -24,7 +23,7 @@ export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [hasNotifications, setHasNotifications] = useState(true);
+  const [hasNotifications] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
