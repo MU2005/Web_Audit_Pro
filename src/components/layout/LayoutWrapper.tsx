@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Header from "./Header";
 import Footer from "./Footer";
-import { ThemeProvider } from "./ThemeProvider";
+import ThemeProvider from "./ThemeProvider";
 
 interface LayoutWrapperProps {
   children: React.ReactNode;

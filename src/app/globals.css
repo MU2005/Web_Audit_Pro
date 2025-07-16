@@ -59,50 +59,48 @@
   --radius-xl: 1.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Premium Color System - Dark Mode */
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    
-    /* Primary Colors - Electric Blue */
-    --primary: 199 89% 48%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 199 89% 38%;
-    
-    /* Secondary Colors - Charcoal */
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --secondary-hover: 217.2 32.6% 17.5%;
-    
-    /* Accent Colors - Mint Green */
-    --accent: 160 84% 39%;
-    --accent-foreground: 0 0% 100%;
-    --accent-hover: 160 84% 29%;
-    
-    /* Muted Colors */
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --muted-hover: 217.2 32.6% 17.5%;
-    
-    /* Border & Input */
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 199 89% 48%;
-    
-    /* Status Colors */
-    --success: 160 84% 39%;
-    --warning: 38 92% 50%;
-    --error: 0 84% 60%;
-    --info: 217 91% 60%;
-    
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(217 91% 60%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(160 84% 39%) 0%, hsl(160 84% 29%) 100%);
-    --gradient-surface: linear-gradient(135deg, hsl(217.2 32.6% 17.5%) 0%, hsl(222.2 84% 4.9%) 100%);
-  }
+.dark {
+  /* Premium Color System - Dark Mode */
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  
+  /* Primary Colors - Electric Blue */
+  --primary: 199 89% 48%;
+  --primary-foreground: 0 0% 100%;
+  --primary-hover: 199 89% 38%;
+  
+  /* Secondary Colors - Charcoal */
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --secondary-hover: 217.2 32.6% 17.5%;
+  
+  /* Accent Colors - Mint Green */
+  --accent: 160 84% 39%;
+  --accent-foreground: 0 0% 100%;
+  --accent-hover: 160 84% 29%;
+  
+  /* Muted Colors */
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --muted-hover: 217.2 32.6% 17.5%;
+  
+  /* Border & Input */
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 199 89% 48%;
+  
+  /* Status Colors */
+  --success: 160 84% 39%;
+  --warning: 38 92% 50%;
+  --error: 0 84% 60%;
+  --info: 217 91% 60%;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(217 91% 60%) 100%);
+  --gradient-accent: linear-gradient(135deg, hsl(160 84% 39%) 0%, hsl(160 84% 29%) 100%);
+  --gradient-surface: linear-gradient(135deg, hsl(217.2 32.6% 17.5%) 0%, hsl(222.2 84% 4.9%) 100%);
 }
 
 * {
@@ -207,99 +205,99 @@ body {
 
 /* Animation Classes */
 .animate-fade-in {
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fadeIn 0.6s ease-out;
 }
 
 .animate-slide-in-left {
-  animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideInLeft 0.6s ease-out;
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideInRight 0.6s ease-out;
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: scaleIn 0.6s ease-out;
 }
 
 .animate-pulse-slow {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Shimmer Loading Effect */
 .shimmer {
-  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted-hover)) 50%, hsl(var(--muted)) 75%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   background-size: 200px 100%;
   animation: shimmer 1.5s infinite;
 }
 
-/* Premium Focus Styles */
+/* Focus States */
 .focus-ring {
   @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
 }
 
-/* Premium Button Styles */
+/* Button Styles */
 .btn-primary {
-  @apply bg-gradient-to-r from-primary to-blue-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 focus-ring hover:scale-105 active:scale-95;
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 bg-gradient-primary text-white shadow-lg hover:shadow-xl hover:scale-105 focus-ring;
 }
 
 .btn-secondary {
-  @apply bg-secondary text-secondary-foreground px-6 py-3 rounded-xl font-medium border border-border hover:bg-secondary-hover transition-all duration-300 focus-ring;
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary-hover focus-ring;
 }
 
 .btn-ghost {
-  @apply text-foreground hover:bg-muted px-4 py-2 rounded-lg transition-all duration-200 focus-ring;
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 text-foreground hover:bg-secondary focus-ring;
 }
 
 .btn-accent {
-  @apply bg-gradient-to-r from-accent to-green-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 focus-ring hover:scale-105 active:scale-95;
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 bg-gradient-accent text-white shadow-lg hover:shadow-xl hover:scale-105 focus-ring;
 }
 
-/* Premium Card Styles */
+/* Card Styles */
 .card {
-  @apply bg-card rounded-2xl border border-border shadow-sm hover:shadow-md transition-all duration-300;
+  @apply bg-card text-card-foreground rounded-2xl border border-border shadow-sm;
 }
 
 .card-elevated {
-  @apply bg-card rounded-2xl border border-border shadow-lg hover:shadow-xl transition-all duration-300;
+  @apply bg-card text-card-foreground rounded-2xl border border-border shadow-lg hover:shadow-xl transition-shadow duration-300;
 }
 
 .card-glass {
-  @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg;
+  @apply bg-card/80 backdrop-blur-xl text-card-foreground rounded-2xl border border-border/50 shadow-lg;
 }
 
-/* Premium Input Styles */
+/* Input Styles */
 .input {
-  @apply bg-input border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus-ring transition-all duration-200 focus:border-primary;
+  @apply flex h-12 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
 }
 
-/* Premium Badge Styles */
+/* Badge Styles */
 .badge {
-  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
 }
 
 .badge-primary {
-  @apply bg-primary/10 text-primary border border-primary/20;
+  @apply border-transparent bg-primary text-primary-foreground hover:bg-primary/80;
 }
 
 .badge-success {
-  @apply bg-success/10 text-success border border-success/20;
+  @apply border-transparent bg-success text-white hover:bg-success/80;
 }
 
 .badge-warning {
-  @apply bg-warning/10 text-warning border border-warning/20;
+  @apply border-transparent bg-warning text-white hover:bg-warning/80;
 }
 
 .badge-error {
-  @apply bg-error/10 text-error border border-error/20;
+  @apply border-transparent bg-error text-white hover:bg-error/80;
 }
 
-/* Premium Gradient Text */
+/* Gradient Text */
 .gradient-text {
   background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
 }
 
 .gradient-text-accent {
@@ -307,9 +305,10 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
 }
 
-/* Premium Background Gradients */
+/* Gradient Backgrounds */
 .gradient-bg-primary {
   background: var(--gradient-primary);
 }
@@ -322,23 +321,23 @@ body {
   background: var(--gradient-surface);
 }
 
-/* Glass Morphism */
+/* Glass Effect */
 .glass {
-  @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50;
+  @apply bg-white/10 backdrop-blur-xl border border-white/20;
 }
 
 /* Hover Effects */
 .hover-lift {
-  @apply transition-all duration-300 hover:scale-105 hover:shadow-lg;
+  @apply transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg;
 }
 
 .hover-glow {
   @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/25;
 }
 
-/* Loading States */
+/* Loading Animation */
 .loading-dots {
-  @apply inline-flex space-x-1;
+  @apply flex space-x-1;
 }
 
 .loading-dots > div {
