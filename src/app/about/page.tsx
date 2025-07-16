@@ -330,7 +330,7 @@ export default function AboutPage() {
               </div>
             </div>
           </motion.div>
-        </div>
+      </div>
       </section>
     </div>
   );

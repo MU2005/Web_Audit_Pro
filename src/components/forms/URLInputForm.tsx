@@ -229,7 +229,7 @@ export default function URLInputForm() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 + index * 0.1 }}
-                className="p-3 rounded-xl bg-secondary hover:bg-secondary-hover transition-all duration-200 text-left group"
+                className="p-3 rounded-xl bg-secondary border border-border hover:bg-secondary-hover hover:border-primary/30 transition-all duration-200 text-left group"
               >
                 <div className="font-medium text-foreground group-hover:text-primary transition-colors">
                   {site.name}

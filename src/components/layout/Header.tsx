@@ -12,10 +12,10 @@ import {
   Shield,
   Eye,
   TrendingUp,
+  Bell,
   Star,
   Clock,
-  Activity,
-  Sparkles
+  Activity
 } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "./ThemeProvider";
@@ -24,8 +24,7 @@ export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [hasNotifications] = useState(true);
-  const [isHoveringLogo, setIsHoveringLogo] = useState(false);
+  const [hasNotifications, setHasNotifications] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,8 +79,8 @@ export default function Header() {
         transition={{ duration: 0.6 }}
         className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ${
           isScrolled 
-            ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50 shadow-2xl" 
-            : "bg-white dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-700/50"
+            ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200/60 dark:border-gray-700/20 shadow-2xl" 
+            : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
@@ -91,62 +90,17 @@ export default function Header() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center space-x-2 sm:space-x-3"
-              onHoverStart={() => setIsHoveringLogo(true)}
-              onHoverEnd={() => setIsHoveringLogo(false)}
             >
               <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
                 <div className="relative">
                   <motion.div 
                     className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300"
                     animate={{ 
-                      boxShadow: isHoveringLogo 
-                        ? [
-                            "0 0 0 0 rgba(59, 130, 246, 0.4)",
-                            "0 0 0 10px rgba(59, 130, 246, 0)",
-                            "0 0 0 0 rgba(59, 130, 246, 0)"
-                          ]
-                        : "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
-                    }}
-                    transition={{
-                      duration: isHoveringLogo ? 2 : 0.3,
-                      repeat: isHoveringLogo ? Infinity : 0,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    <motion.div
-                      animate={{ 
-                        scale: isHoveringLogo ? [1, 1.1, 1] : 1,
-                        rotate: isHoveringLogo ? [0, 5, -5, 0] : 0
-                      }}
-                      transition={{
-                        duration: isHoveringLogo ? 3 : 0.3,
-                        repeat: isHoveringLogo ? Infinity : 0,
-                        ease: "easeInOut"
-                      }}
-                    >
-                      <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                    </motion.div>
-                    
-                    {/* Sparkle effect on hover */}
-                    <AnimatePresence>
-                      {isHoveringLogo && (
-                        <motion.div
-                          initial={{ opacity: 0, scale: 0 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0 }}
-                          className="absolute inset-0 flex items-center justify-center"
-                        >
-                          <Sparkles className="w-4 h-4 text-white/80" />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                  
-                  <motion.div 
-                    className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full flex items-center justify-center"
-                    animate={{ 
-                      scale: [1, 1.2, 1],
-                      opacity: [1, 0.8, 1]
+                      boxShadow: [
+                        "0 0 0 0 rgba(59, 130, 246, 0.4)",
+                        "0 0 0 10px rgba(59, 130, 246, 0)",
+                        "0 0 0 0 rgba(59, 130, 246, 0)"
+                      ]
                     }}
                     transition={{
                       duration: 2,
@@ -154,9 +108,21 @@ export default function Header() {
                       ease: "easeInOut"
                     }}
                   >
-                    <div className="w-2 h-2 bg-white rounded-full" />
+                    <motion.div
+                      animate={{ 
+                        scale: [1, 1.1, 1],
+                        rotate: [0, 5, -5, 0]
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    </motion.div>
                   </motion.div>
-                  
+
                   <motion.div
                     className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400/20 to-purple-400/20"
                     animate={{ opacity: [0, 0.5, 0] }}
@@ -187,22 +153,13 @@ export default function Header() {
                   key={item.name}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="relative"
                 >
                   <Link
                     href={item.href}
-                    className="flex items-center space-x-2 text-foreground/80 hover:text-foreground transition-colors duration-200 font-medium relative group"
+                    className="flex items-center space-x-2 text-foreground/80 hover:text-foreground transition-colors duration-200 font-medium"
                   >
-                    <item.icon className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                    <item.icon className="w-4 h-4" />
                     <span>{item.name}</span>
-                    
-                    {/* Hover underline effect */}
-                    <motion.div
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-primary rounded-full"
-                      initial={{ scaleX: 0 }}
-                      whileHover={{ scaleX: 1 }}
-                      transition={{ duration: 0.2 }}
-                    />
                   </Link>
                 </motion.div>
               ))}
@@ -212,15 +169,12 @@ export default function Header() {
             <div className="hidden lg:flex items-center space-x-4">
               {/* Theme Toggle */}
               <motion.button
-                whileHover={{ scale: 1.1, rotate: 180 }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleTheme}
-                className="p-3 rounded-xl bg-secondary hover:bg-secondary-hover transition-all duration-200 focus-ring relative overflow-hidden group"
+                className="p-2 rounded-xl bg-secondary hover:bg-secondary-hover transition-all duration-200 focus-ring"
                 aria-label="Toggle theme"
               >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-20 transition-opacity duration-200"
-                />
                 <AnimatePresence mode="wait">
                   {theme === "light" ? (
                     <motion.div
@@ -228,7 +182,7 @@ export default function Header() {
                       initial={{ rotate: -90, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <Moon className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -238,7 +192,7 @@ export default function Header() {
                       initial={{ rotate: 90, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <Sun className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -253,12 +207,9 @@ export default function Header() {
               >
                 <Link
                   href="/"
-                  className="btn-primary inline-flex items-center space-x-2 relative overflow-hidden group"
+                  className="btn-primary inline-flex items-center space-x-2"
                 >
-                  <motion.div
-                    className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                  />
-                  <Zap className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                  <Zap className="w-4 h-4" />
                   <span>Start Audit</span>
                 </Link>
               </motion.div>
@@ -267,15 +218,12 @@ export default function Header() {
             {/* Enhanced Mobile Menu Button */}
             <div className="lg:hidden flex items-center space-x-3">
               <motion.button
-                whileHover={{ scale: 1.1, rotate: 180 }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleTheme}
-                className="p-3 rounded-xl bg-secondary hover:bg-secondary-hover transition-all duration-200 focus-ring relative overflow-hidden group"
+                className="p-3 rounded-xl bg-gray-100/80 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-gray-200/80 dark:hover:bg-gray-700/50 transition-all duration-200 border border-gray-200/60 dark:border-gray-700/50 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-transparent focus:border-transparent"
                 aria-label="Toggle theme"
               >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-20 transition-opacity duration-200"
-                />
                 <AnimatePresence mode="wait">
                   {theme === "light" ? (
                     <motion.div
@@ -283,7 +231,7 @@ export default function Header() {
                       initial={{ rotate: -90, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <Moon className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -293,7 +241,7 @@ export default function Header() {
                       initial={{ rotate: 90, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <Sun className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -305,12 +253,9 @@ export default function Header() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="relative p-3 rounded-xl bg-secondary hover:bg-secondary-hover transition-all duration-200 focus-ring mobile-menu-container overflow-hidden group"
+                className="relative p-3 rounded-xl bg-gray-100/80 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-gray-200/80 dark:hover:bg-gray-700/50 transition-all duration-200 border border-gray-200/60 dark:border-gray-700/50 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-transparent focus:border-transparent mobile-menu-container"
                 aria-label="Toggle mobile menu"
               >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-20 transition-opacity duration-200"
-                />
                 <AnimatePresence mode="wait">
                   {isMobileMenuOpen ? (
                     <motion.div
@@ -318,7 +263,7 @@ export default function Header() {
                       initial={{ rotate: -90, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <X className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -328,7 +273,7 @@ export default function Header() {
                       initial={{ rotate: 90, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <Menu className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -364,12 +309,9 @@ export default function Header() {
         >
           <Link
             href="/"
-            className="btn-primary inline-flex items-center space-x-2 px-6 py-4 rounded-full shadow-2xl relative overflow-hidden group"
+            className="bg-primary text-primary-foreground hover:bg-primary-hover inline-flex items-center space-x-2 px-6 py-4 rounded-full shadow-2xl font-semibold transition-all duration-200"
           >
-            <motion.div
-              className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            />
-            <Zap className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+            <Zap className="w-5 h-5" />
             <span className="font-semibold">Audit</span>
           </Link>
         </motion.div>
@@ -484,12 +426,9 @@ export default function Header() {
                     <Link
                       href="/"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="btn-primary w-full inline-flex items-center justify-center space-x-3 py-4 text-lg font-medium relative overflow-hidden group"
+                      className="btn-primary w-full inline-flex items-center justify-center space-x-3 py-4 text-lg font-medium"
                     >
-                      <motion.div
-                        className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                      />
-                      <Zap className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+                      <Zap className="w-5 h-5" />
                       <span>Start New Audit</span>
                     </Link>
                   </motion.div>

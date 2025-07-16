@@ -16,24 +16,24 @@
   --primary-foreground: 0 0% 100%;
   --primary-hover: 199 89% 38%;
   
-  /* Secondary Colors - Slate */
-  --secondary: 210 40% 98%;
+  /* Secondary Colors - Light Blue Gray */
+  --secondary: 210 40% 96%;
   --secondary-foreground: 222.2 84% 4.9%;
-  --secondary-hover: 210 40% 96%;
+  --secondary-hover: 210 40% 94%;
   
   /* Accent Colors - Mint Green */
   --accent: 160 84% 39%;
   --accent-foreground: 0 0% 100%;
   --accent-hover: 160 84% 29%;
   
-  /* Muted Colors */
+  /* Muted Colors - Sophisticated Grays */
   --muted: 210 40% 96%;
   --muted-foreground: 215.4 16.3% 46.9%;
-  --muted-hover: 210 40% 96%;
+  --muted-hover: 210 40% 94%;
   
-  /* Border & Input */
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
+  /* Border & Input - Premium Contrast */
+  --border: 214.3 31.8% 88%;
+  --input: 214.3 31.8% 88%;
   --ring: 199 89% 48%;
   
   /* Status Colors */
@@ -47,11 +47,11 @@
   --gradient-accent: linear-gradient(135deg, hsl(160 84% 39%) 0%, hsl(160 84% 29%) 100%);
   --gradient-surface: linear-gradient(135deg, hsl(210 40% 98%) 0%, hsl(210 40% 96%) 100%);
   
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  /* Shadows - Enhanced for Light Mode */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.08);
+  --shadow-md: 0 4px 8px -1px rgb(0 0 0 / 0.12), 0 2px 6px -2px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 10px 20px -3px rgb(0 0 0 / 0.15), 0 4px 8px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 30px -5px rgb(0 0 0 / 0.18), 0 8px 15px -6px rgb(0 0 0 / 0.12);
   
   /* Border Radius */
   --radius: 0.75rem;

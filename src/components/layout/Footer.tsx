@@ -120,7 +120,7 @@ export default function Footer() {
             <span>by Umar</span>
           </div>
           
-          <div className="flex items-center space-x-6 text-sm">
+          <div className="flex items-center space-x-6 text-sm text-muted-foreground">
             <Link
               href="/privacy"
               className="text-muted-foreground hover:text-foreground transition-colors"
