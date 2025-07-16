@@ -26,9 +26,20 @@ export default function URLInputForm() {
   ];
 
   const validateUrl = (input: string) => {
+    if (!input || input.trim().length === 0) {
+      return false;
+    }
+    
     try {
-      const urlObj = new URL(input.startsWith('http') ? input : `https://${input}`);
-      return urlObj.hostname.length > 0;
+      // Remove whitespace and normalize
+      const cleanInput = input.trim();
+      const urlObj = new URL(cleanInput.startsWith('http') ? cleanInput : `https://${cleanInput}`);
+      
+      // Check if it's a valid URL with proper hostname
+      return urlObj.hostname.length > 0 && 
+             urlObj.hostname.includes('.') && 
+             !urlObj.hostname.startsWith('.') && 
+             !urlObj.hostname.endsWith('.');
     } catch {
       return false;
     }
@@ -43,7 +54,7 @@ export default function URLInputForm() {
       const valid = validateUrl(value);
       setIsValid(valid);
       if (!valid) {
-        setError("Please enter a valid URL");
+        setError("Please enter a valid URL (e.g., example.com)");
       }
     } else {
       setIsValid(false);
@@ -59,8 +70,14 @@ export default function URLInputForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Additional validation before submission
+    if (!url || url.trim().length === 0) {
+      setError("Please enter a website URL");
+      return;
+    }
+    
     if (!isValid) {
-      setError("Please enter a valid URL");
+      setError("Please enter a valid URL (e.g., example.com)");
       return;
     }
 
@@ -69,7 +86,7 @@ export default function URLInputForm() {
 
     try {
       // Normalize URL
-      const normalizedUrl = url.startsWith('http') ? url : `https://${url}`;
+      const normalizedUrl = url.trim().startsWith('http') ? url.trim() : `https://${url.trim()}`;
       
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -93,11 +110,12 @@ export default function URLInputForm() {
         className="relative"
       >
         {/* Main Input Container */}
-        <div className="relative bg-card rounded-2xl border border-border shadow-lg hover:shadow-xl transition-all duration-300 p-2">
-          <div className="flex items-center space-x-3 p-4">
+        <div className="relative bg-card rounded-2xl border border-border shadow-lg hover:shadow-xl transition-all duration-300 p-2 sm:p-3">
+          {/* Input Row - Mobile: Input + Status, Desktop: Input + Status + Button */}
+          <div className="flex items-center space-x-3 sm:space-x-4 p-4 sm:p-6">
             {/* Search Icon */}
             <div className="flex-shrink-0">
-              <Search className="w-6 h-6 text-muted-foreground" />
+              <Search className="w-4 h-4 sm:w-6 sm:h-6 text-muted-foreground" />
             </div>
 
             {/* URL Input */}
@@ -107,7 +125,7 @@ export default function URLInputForm() {
                 value={url}
                 onChange={handleUrlChange}
                 placeholder="Enter website URL (e.g., example.com)"
-                className="w-full bg-transparent text-foreground placeholder:text-muted-foreground text-lg font-medium focus:outline-none"
+                className="w-full bg-transparent text-foreground placeholder:text-muted-foreground text-base sm:text-lg font-medium focus:outline-none py-1"
                 disabled={isLoading}
               />
               
@@ -126,8 +144,8 @@ export default function URLInputForm() {
               </AnimatePresence>
             </div>
 
-            {/* Status Indicators */}
-            <div className="flex items-center space-x-2">
+            {/* Status Indicators - Hidden on very small screens */}
+            <div className="hidden sm:flex items-center space-x-3">
               <AnimatePresence mode="wait">
                 {isLoading ? (
                   <motion.div
@@ -135,10 +153,10 @@ export default function URLInputForm() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-3"
                   >
-                    <Loader2 className="w-5 h-5 text-primary animate-spin" />
-                    <span className="text-sm text-muted-foreground">Analyzing...</span>
+                    <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary animate-spin" />
+                    <span className="text-xs sm:text-sm text-primary">Processing...</span>
                   </motion.div>
                 ) : isValid ? (
                   <motion.div
@@ -146,10 +164,10 @@ export default function URLInputForm() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-3"
                   >
-                    <CheckCircle className="w-5 h-5 text-success" />
-                    <span className="text-sm text-success">Valid URL</span>
+                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-success" />
+                    <span className="text-xs sm:text-sm text-success">Valid URL</span>
                   </motion.div>
                 ) : error ? (
                   <motion.div
@@ -157,22 +175,51 @@ export default function URLInputForm() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-3"
                   >
-                    <AlertCircle className="w-5 h-5 text-error" />
-                    <span className="text-sm text-error">Invalid URL</span>
+                    <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-error" />
+                    <span className="text-xs sm:text-sm text-error">Invalid URL</span>
                   </motion.div>
                 ) : null}
               </AnimatePresence>
             </div>
 
-            {/* Submit Button */}
+            {/* Submit Button - Desktop Only */}
+            <div className="hidden lg:block">
+              <motion.button
+                type="submit"
+                disabled={!isValid || isLoading}
+                whileHover={isValid && !isLoading ? { scale: 1.05 } : {}}
+                whileTap={isValid && !isLoading ? { scale: 0.95 } : {}}
+                className={`flex items-center space-x-3 px-8 py-4 rounded-xl font-medium transition-all duration-300 text-base ${
+                  isValid && !isLoading
+                    ? "bg-gradient-primary text-white shadow-lg hover:shadow-xl"
+                    : "bg-muted text-muted-foreground cursor-not-allowed"
+                }`}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Analyzing...</span>
+                  </>
+                ) : (
+                  <>
+                    <Zap className="w-4 h-4" />
+                    <span>Start Audit</span>
+                  </>
+                )}
+              </motion.button>
+            </div>
+          </div>
+
+          {/* Submit Button - Mobile Only */}
+          <div className="lg:hidden px-4 sm:px-6 pb-4 sm:pb-6">
             <motion.button
               type="submit"
               disabled={!isValid || isLoading}
               whileHover={isValid && !isLoading ? { scale: 1.05 } : {}}
               whileTap={isValid && !isLoading ? { scale: 0.95 } : {}}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
+              className={`w-full flex items-center justify-center space-x-3 px-6 py-4 rounded-xl font-medium transition-all duration-300 text-sm ${
                 isValid && !isLoading
                   ? "bg-gradient-primary text-white shadow-lg hover:shadow-xl"
                   : "bg-muted text-muted-foreground cursor-not-allowed"
@@ -200,9 +247,9 @@ export default function URLInputForm() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="mt-3 flex items-center space-x-2 text-error text-sm"
+              className="mt-4 flex items-center space-x-3 text-error text-xs sm:text-sm"
             >
-              <AlertCircle className="w-4 h-4" />
+              <AlertCircle className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>{error}</span>
             </motion.div>
           )}
@@ -213,12 +260,12 @@ export default function URLInputForm() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-6"
+          className="mt-6 sm:mt-8"
         >
-          <p className="text-sm text-muted-foreground text-center mb-4">
+          <p className="text-xs sm:text-sm text-muted-foreground text-center mb-4 sm:mb-6">
             Try auditing these popular websites:
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             {sampleSites.map((site, index) => (
               <motion.button
                 key={site.name}
@@ -229,9 +276,9 @@ export default function URLInputForm() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 + index * 0.1 }}
-                className="p-3 rounded-xl bg-secondary border border-border hover:bg-secondary-hover hover:border-primary/30 transition-all duration-200 text-left group"
+                className="p-3 sm:p-4 rounded-xl bg-secondary border border-border hover:bg-secondary-hover hover:border-primary/30 transition-all duration-200 text-left group"
               >
-                <div className="font-medium text-foreground group-hover:text-primary transition-colors">
+                <div className="font-medium text-foreground group-hover:text-primary transition-colors text-sm sm:text-base mb-1">
                   {site.name}
                 </div>
                 <div className="text-xs text-muted-foreground">
@@ -247,9 +294,9 @@ export default function URLInputForm() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-6 text-center"
+          className="mt-6 sm:mt-8 text-center"
         >
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Enter any website URL to get instant performance, SEO, security, and accessibility insights
           </p>
         </motion.div>
