@@ -76,13 +76,13 @@ export default function Header() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 safe-area-top ${
           isScrolled 
             ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200/60 dark:border-gray-700/20 shadow-2xl" 
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+        <div className="container-responsive">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Enhanced Logo */}
             <motion.div
@@ -90,7 +90,7 @@ export default function Header() {
               whileTap={{ scale: 0.95 }}
               className="flex items-center space-x-2 sm:space-x-3"
             >
-              <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
+              <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group touch-target">
                 <div className="relative">
                   <motion.div 
                     className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300"
@@ -155,7 +155,7 @@ export default function Header() {
                 >
                   <Link
                     href={item.href}
-                    className="flex items-center space-x-2 text-foreground/80 hover:text-foreground transition-colors duration-200 font-medium"
+                    className="flex items-center space-x-2 text-foreground/80 hover:text-foreground transition-colors duration-200 font-medium touch-target"
                   >
                     <item.icon className="w-4 h-4" />
                     <span>{item.name}</span>
@@ -171,7 +171,7 @@ export default function Header() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleTheme}
-                className="p-2 rounded-xl bg-secondary hover:bg-secondary-hover transition-all duration-200 focus-ring"
+                className="relative p-2 rounded-xl bg-secondary hover:bg-secondary-hover transition-all duration-200 focus-ring touch-target flex items-center justify-center"
                 aria-label="Toggle theme"
               >
                 <AnimatePresence mode="wait">
@@ -182,6 +182,7 @@ export default function Header() {
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: 90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
+                      className="flex items-center justify-center"
                     >
                       <Moon className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -192,6 +193,7 @@ export default function Header() {
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: -90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
+                      className="flex items-center justify-center"
                     >
                       <Sun className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -220,7 +222,7 @@ export default function Header() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleTheme}
-                className="p-3 rounded-xl bg-gray-100/80 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-gray-200/80 dark:hover:bg-gray-700/50 transition-all duration-200 border border-gray-200/60 dark:border-gray-700/50 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-transparent focus:border-transparent"
+                className="relative p-3 rounded-xl bg-gray-100/80 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-gray-200/80 dark:hover:bg-gray-700/50 transition-all duration-200 border border-gray-200/60 dark:border-gray-700/50 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-transparent focus:border-transparent touch-target flex items-center justify-center"
                 aria-label="Toggle theme"
               >
                 <AnimatePresence mode="wait">
@@ -231,6 +233,7 @@ export default function Header() {
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: 90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
+                      className="flex items-center justify-center"
                     >
                       <Moon className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -241,6 +244,7 @@ export default function Header() {
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: -90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
+                      className="flex items-center justify-center"
                     >
                       <Sun className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -252,7 +256,7 @@ export default function Header() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="relative p-3 rounded-xl bg-gray-100/80 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-gray-200/80 dark:hover:bg-gray-700/50 transition-all duration-200 border border-gray-200/60 dark:border-gray-700/50 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-transparent focus:border-transparent mobile-menu-container"
+                className="relative p-3 rounded-xl bg-gray-100/80 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-gray-200/80 dark:hover:bg-gray-700/50 transition-all duration-200 border border-gray-200/60 dark:border-gray-700/50 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-transparent focus:border-transparent mobile-menu-container touch-target flex items-center justify-center"
                 aria-label="Toggle mobile menu"
               >
                 <AnimatePresence mode="wait">
@@ -263,6 +267,7 @@ export default function Header() {
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: 90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
+                      className="flex items-center justify-center"
                     >
                       <X className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -273,6 +278,7 @@ export default function Header() {
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: -90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
+                      className="flex items-center justify-center"
                     >
                       <Menu className="w-5 h-5 text-foreground" />
                     </motion.div>
@@ -293,6 +299,18 @@ export default function Header() {
             </div>
           </div>
         </div>
+
+        {/* Animated Separator Line */}
+        <motion.div
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ width: "100%", opacity: 1 }}
+          transition={{ 
+            duration: 2.5, 
+            ease: "easeOut",
+            delay: 0.8
+          }}
+          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full mt-5"
+        />
       </motion.header>
 
       {/* Floating CTA Button for Mobile */}
@@ -300,7 +318,7 @@ export default function Header() {
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className="fixed bottom-6 right-6 z-40 lg:hidden"
+        className="fixed bottom-6 right-6 z-40 lg:hidden safe-area-bottom"
       >
         <motion.div
           whileHover={{ scale: 1.05 }}
@@ -308,7 +326,7 @@ export default function Header() {
         >
           <Link
             href="/"
-            className="bg-primary text-primary-foreground hover:bg-primary-hover inline-flex items-center space-x-2 px-6 py-4 rounded-full shadow-2xl font-semibold transition-all duration-200"
+            className="bg-primary text-primary-foreground hover:bg-primary-hover inline-flex items-center space-x-2 px-6 py-4 rounded-full shadow-2xl font-semibold transition-all duration-200 touch-target"
           >
             <Zap className="w-5 h-5" />
             <span className="font-semibold">Audit</span>
@@ -335,7 +353,7 @@ export default function Header() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: "100%" }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 bg-card/95 backdrop-blur-xl border-l border-border lg:hidden mobile-menu-container"
+              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 bg-card/95 backdrop-blur-xl border-l border-border lg:hidden mobile-menu-container safe-area-top safe-area-bottom"
             >
               <div className="h-full flex flex-col">
                 {/* Menu Header */}
@@ -353,7 +371,7 @@ export default function Header() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-2 rounded-xl bg-secondary hover:bg-secondary-hover transition-all duration-200"
+                    className="p-2 rounded-xl bg-secondary hover:bg-secondary-hover transition-all duration-200 touch-target"
                   >
                     <X className="w-5 h-5 text-foreground" />
                   </motion.button>
@@ -372,7 +390,7 @@ export default function Header() {
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: index * 0.1 }}
                         >
-                          <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-secondary transition-all duration-200 group">
+                          <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-secondary transition-all duration-200 group touch-target">
                             <div className="flex items-center space-x-3">
                               <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center group-hover:bg-secondary-hover transition-colors">
                                 <action.icon className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -402,7 +420,7 @@ export default function Header() {
                           <Link
                             href={item.href}
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center space-x-3 p-3 rounded-xl hover:bg-secondary transition-all duration-200 group"
+                            className="flex items-center space-x-3 p-3 rounded-xl hover:bg-secondary transition-all duration-200 group touch-target"
                           >
                             <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center group-hover:bg-secondary-hover transition-colors">
                               <item.icon className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />

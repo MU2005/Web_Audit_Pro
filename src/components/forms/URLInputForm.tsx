@@ -125,7 +125,7 @@ export default function URLInputForm() {
                 value={url}
                 onChange={handleUrlChange}
                 placeholder="Enter website URL (e.g., example.com)"
-                className="w-full bg-transparent text-foreground placeholder:text-muted-foreground text-base sm:text-lg font-medium focus:outline-none py-1"
+                className="w-full bg-transparent text-foreground placeholder:text-muted-foreground text-sm sm:text-base lg:text-lg font-medium focus:outline-none py-1 touch-target"
                 disabled={isLoading}
               />
               
@@ -191,7 +191,7 @@ export default function URLInputForm() {
                 disabled={!isValid || isLoading}
                 whileHover={isValid && !isLoading ? { scale: 1.05 } : {}}
                 whileTap={isValid && !isLoading ? { scale: 0.95 } : {}}
-                className={`flex items-center space-x-3 px-8 py-4 rounded-xl font-medium transition-all duration-300 text-base ${
+                className={`flex items-center space-x-3 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-medium transition-all duration-300 text-sm sm:text-base touch-target ${
                   isValid && !isLoading
                     ? "bg-gradient-primary text-white shadow-lg hover:shadow-xl"
                     : "bg-muted text-muted-foreground cursor-not-allowed"
@@ -219,7 +219,7 @@ export default function URLInputForm() {
               disabled={!isValid || isLoading}
               whileHover={isValid && !isLoading ? { scale: 1.05 } : {}}
               whileTap={isValid && !isLoading ? { scale: 0.95 } : {}}
-              className={`w-full flex items-center justify-center space-x-3 px-6 py-4 rounded-xl font-medium transition-all duration-300 text-sm ${
+              className={`w-full flex items-center justify-center space-x-3 px-6 py-4 rounded-xl font-medium transition-all duration-300 text-sm touch-target ${
                 isValid && !isLoading
                   ? "bg-gradient-primary text-white shadow-lg hover:shadow-xl"
                   : "bg-muted text-muted-foreground cursor-not-allowed"
@@ -249,7 +249,7 @@ export default function URLInputForm() {
               exit={{ opacity: 0, y: -10 }}
               className="mt-4 flex items-center space-x-3 text-error text-xs sm:text-sm"
             >
-              <AlertCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
               <span>{error}</span>
             </motion.div>
           )}
@@ -257,48 +257,29 @@ export default function URLInputForm() {
 
         {/* Sample Sites */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-6 sm:mt-8"
         >
-          <p className="text-xs sm:text-sm text-muted-foreground text-center mb-4 sm:mb-6">
-            Try auditing these popular websites:
+          <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 text-center">
+            Try with a sample site:
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            {sampleSites.map((site, index) => (
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+            {sampleSites.map((site) => (
               <motion.button
                 key={site.name}
                 type="button"
                 onClick={() => handleSampleClick(site.url)}
-                whileHover={{ scale: 1.05, y: -2 }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                className="p-3 sm:p-4 rounded-xl bg-secondary border border-border hover:bg-secondary-hover hover:border-primary/30 transition-all duration-200 text-left group"
+                className="px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm bg-secondary hover:bg-secondary-hover text-foreground rounded-lg transition-all duration-200 touch-target"
+                title={`${site.name} - ${site.description}`}
               >
-                <div className="font-medium text-foreground group-hover:text-primary transition-colors text-sm sm:text-base mb-1">
-                  {site.name}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {site.description}
-                </div>
+                {site.name}
               </motion.button>
             ))}
           </div>
-        </motion.div>
-
-        {/* Help Text */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-6 sm:mt-8 text-center"
-        >
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Enter any website URL to get instant performance, SEO, security, and accessibility insights
-          </p>
         </motion.div>
       </motion.form>
     </div>

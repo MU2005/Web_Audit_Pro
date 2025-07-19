@@ -12,7 +12,7 @@ interface LayoutWrapperProps {
 export default function LayoutWrapper({ children }: LayoutWrapperProps) {
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background flex flex-col">
         {/* Fixed Header */}
         <Header />
 
@@ -21,11 +21,13 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="pt-16 min-h-screen flex flex-col"
+          className="flex-1 flex flex-col pt-16 lg:pt-20"
         >
-          {/* Content Container */}
-          <div className="flex-1 w-full max-w-none p-4 sm:p-6 lg:p-8">
-            {children}
+          {/* Content Container with Enhanced Responsive Design */}
+          <div className="flex-1 w-full container-responsive">
+            <div className="py-4 sm:py-6 lg:py-8 xl:py-10">
+              {children}
+            </div>
           </div>
 
           {/* Footer */}
