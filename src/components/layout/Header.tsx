@@ -83,7 +83,7 @@ export default function Header() {
         }`}
       >
         <div className="container-responsive">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+          <div className="flex items-center justify-between h-16 lg:h-20 mb-4 mt-4 mr-2">
             {/* Enhanced Logo */}
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -312,27 +312,6 @@ export default function Header() {
           className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full mt-5"
         />
       </motion.header>
-
-      {/* Floating CTA Button for Mobile */}
-      <motion.div
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="fixed bottom-6 right-6 z-40 lg:hidden safe-area-bottom"
-      >
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Link
-            href="/"
-            className="bg-primary text-primary-foreground hover:bg-primary-hover inline-flex items-center space-x-2 px-6 py-4 rounded-full shadow-2xl font-semibold transition-all duration-200 touch-target"
-          >
-            <Zap className="w-5 h-5" />
-            <span className="font-semibold">Audit</span>
-          </Link>
-        </motion.div>
-      </motion.div>
 
       {/* Enhanced Mobile Menu Full Screen Overlay */}
       <AnimatePresence>

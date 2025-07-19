@@ -265,13 +265,28 @@ export default function URLInputForm() {
           <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 text-center">
             Try with a sample site:
           </p>
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-            {sampleSites.map((site) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 max-w-xs sm:max-w-md mx-auto">
+            {sampleSites.map((site, index) => (
               <motion.button
                 key={site.name}
                 type="button"
                 onClick={() => handleSampleClick(site.url)}
-                whileHover={{ scale: 1.05 }}
+                initial={{ 
+                  opacity: 0, 
+                  x: index % 2 === 0 ? -20 : 20,
+                  y: 15
+                }}
+                whileInView={{ 
+                  opacity: 1, 
+                  x: 0,
+                  y: 0
+                }}
+                transition={{ 
+                  duration: 0.8, 
+                  delay: index * 0.15,
+                  ease: "easeOut"
+                }}
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm bg-secondary hover:bg-secondary-hover text-foreground rounded-lg transition-all duration-200 touch-target"
                 title={`${site.name} - ${site.description}`}

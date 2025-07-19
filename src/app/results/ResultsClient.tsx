@@ -3,11 +3,33 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ScoreCard, scoreCardConfigs } from "../../components/cards";
-import { ChartDisplay } from "../../components/charts";
-import { IssueList } from "../../components/ui";
-import { BarChart3, CalendarDays, Share2, Copy, RefreshCw } from "lucide-react";
-import { ToastContainer, ToastProps } from "../../components/ui";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  ArrowLeft, 
+  Share2, 
+  Copy, 
+  RefreshCw,
+  Globe,
+  Clock,
+  Smartphone,
+  Monitor,
+  TrendingUp,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  Info,
+  Zap,
+  Eye,
+  Shield,
+  BarChart3,
+  Activity,
+  Target,
+  Gauge,
+  AlertCircle,
+  Star,
+  Download,
+  ExternalLink
+} from "lucide-react";
 
 // Define the audit result interface
 interface AuditResult {
@@ -43,7 +65,7 @@ export default function ResultsClient() {
   const [auditData, setAuditData] = useState<AuditResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [toasts, setToasts] = useState<ToastProps[]>([]);
+  const [activeTab, setActiveTab] = useState('overview');
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -131,31 +153,53 @@ export default function ResultsClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">Loading audit results...</p>
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center space-y-6 px-4"
+        >
+          <div className="relative">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mx-auto"></div>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 w-16 h-16 sm:w-20 sm:h-20 border-4 border-transparent border-t-indigo-500 rounded-full"
+              style={{ animationDelay: '-1s' }}
+            ></motion.div>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Analyzing Website</h2>
+            <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">Running comprehensive audit...</p>
         </div>
+        </motion.div>
       </div>
     );
   }
 
   if (error || !auditData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl">⚠️</span>
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center space-y-6 max-w-md mx-auto p-6 sm:p-8"
+        >
+          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto">
+            <XCircle className="w-8 h-8 sm:w-10 sm:h-10 text-red-600 dark:text-red-400" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Error Loading Results</h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm sm:text-base">{error || 'No audit data available'}</p>
+          <div className="space-y-3">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Error Loading Results</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">{error || 'No audit data available'}</p>
+          </div>
           <Link 
             href="/" 
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm sm:text-base touch-target"
+            className="inline-flex items-center space-x-2 bg-blue-600 text-white px-4 sm:px-6 py-3 rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl text-sm sm:text-base"
           >
-            Start New Audit
+            <ArrowLeft className="w-4 h-4" />
+            <span>Start New Audit</span>
           </Link>
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -165,14 +209,20 @@ export default function ResultsClient() {
   const overallScore = Math.round((scores.performance + scores.seo + scores.security + scores.accessibility) / 4);
   const deviceLabel = device === 'mobile' ? 'Mobile' : 'Desktop';
 
-  const addToast = (toast: Omit<ToastProps, 'id' | 'onDismiss'>) => {
-    const id = Math.random().toString(36).substr(2, 9);
-    setToasts(prev => [...prev, { ...toast, id, onDismiss: dismissToast }]);
+  const getScoreColor = (score: number) => {
+    if (score >= 90) return "text-emerald-600 dark:text-emerald-400";
+    if (score >= 70) return "text-amber-600 dark:text-amber-400";
+    return "text-red-600 dark:text-red-400";
   };
 
-  const dismissToast = (id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id));
+  const getScoreStatus = (score: number) => {
+    if (score >= 90) return { text: "Excellent", icon: CheckCircle, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-900/20" };
+    if (score >= 70) return { text: "Good", icon: AlertTriangle, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-900/20" };
+    return { text: "Needs Improvement", icon: XCircle, color: "text-red-600 dark:text-red-400", bg: "bg-red-50 dark:bg-red-900/20" };
   };
+
+  const overallStatus = getScoreStatus(overallScore);
+  const OverallStatusIcon = overallStatus.icon;
 
   const handleShare = async () => {
     try {
@@ -184,15 +234,11 @@ export default function ResultsClient() {
       
       if (navigator.share) {
         await navigator.share(shareData);
-        addToast({ type: 'success', title: 'Shared Successfully!', message: 'Your audit results have been shared.' });
       } else {
-        // Fallback: copy to clipboard
         await navigator.clipboard.writeText(window.location.href);
-        addToast({ type: 'success', title: 'Link Copied!', message: 'Audit link copied to clipboard.' });
       }
     } catch {
       console.error('Share failed');
-      addToast({ type: 'error', title: 'Share Failed', message: 'Please try again.' });
     }
   };
 
@@ -212,44 +258,48 @@ Generated: ${new Date(timestamp).toLocaleString()}
       `.trim();
       
       await navigator.clipboard.writeText(resultsText);
-      addToast({ type: 'success', title: 'Results Copied!', message: 'Audit results copied to clipboard.' });
     } catch {
       console.error('Copy failed');
-      addToast({ type: 'error', title: 'Copy Failed', message: 'Please try again.' });
     }
   };
 
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: Activity },
+    { id: 'performance', label: 'Performance', icon: Zap },
+    { id: 'seo', label: 'SEO', icon: Eye },
+    { id: 'security', label: 'Security', icon: Shield },
+    { id: 'accessibility', label: 'Accessibility', icon: BarChart3 },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 py-6 sm:py-10">
-      <div className="container-responsive space-y-6 sm:space-y-8">
-        {/* Summary Card */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 p-4 sm:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-            </div>
-            <div>
-              <div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white break-all">{url}</div>
-              <div className="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
-                <span>{deviceLabel}</span>
-                <CalendarDays className="w-3 h-3 sm:w-4 sm:h-4 ml-3 sm:ml-4 mr-1" />
-                <span suppressHydrationWarning>{new Date(timestamp).toLocaleString()}</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-end gap-2">
-            <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-base sm:text-lg shadow">{overallScore}/100</span>
-            <div className="flex flex-wrap gap-2 mt-2">
+    <div className="min-h-screen bg-white dark:bg-black">
+      {/* Hero Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20">
+            <Link
+              href="/"
+              className="inline-flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="font-medium text-sm sm:text-base">Back to Home</span>
+            </Link>
+            
+            <div className="flex items-center space-x-2 sm:space-x-3">
               <button 
                 onClick={handleShare}
-                className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 font-medium text-xs sm:text-sm hover:bg-blue-200 dark:hover:bg-blue-800 transition touch-target"
+                className="inline-flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200"
               >
                 <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline">Share</span>
               </button>
               <button 
                 onClick={handleCopyResults}
-                className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 font-medium text-xs sm:text-sm hover:bg-green-200 dark:hover:bg-green-800 transition touch-target"
+                className="inline-flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200"
               >
                 <Copy className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline">Copy</span>
@@ -257,63 +307,286 @@ Generated: ${new Date(timestamp).toLocaleString()}
             </div>
           </div>
         </div>
+      </motion.div>
 
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="space-y-6 sm:space-y-8">
+          {/* Header Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-center space-y-4 sm:space-y-6"
+          >
+            <div className="flex items-center justify-center space-x-3 sm:space-x-4">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
+                <Target className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+              </div>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">Audit Results</h1>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm sm:text-base lg:text-lg px-4">
+              Comprehensive analysis of your website's performance, SEO, security, and accessibility
+            </p>
+          </motion.div>
+
+          {/* URL and Score Overview */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white dark:bg-gray-900 rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 lg:p-8 shadow-xl"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+              {/* URL Information */}
+              <div className="space-y-3 sm:space-y-4">
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <Globe className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500 dark:text-gray-400 flex-shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white break-all">{url}</h2>
+                    <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 sm:mt-2">
+                      <span className="flex items-center space-x-1">
+                        {device === 'mobile' ? <Smartphone className="w-3 h-3 sm:w-4 sm:h-4" /> : <Monitor className="w-3 h-3 sm:w-4 sm:h-4" />}
+                        <span>{deviceLabel}</span>
+                      </span>
+                      <span className="flex items-center space-x-1">
+                        <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span suppressHydrationWarning className="truncate">{new Date(timestamp).toLocaleString()}</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Overall Score */}
+              <div className="flex flex-col items-center justify-center">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+                  className="text-center space-y-3 sm:space-y-4"
+                >
+                  <div className={`inline-flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-1 sm:py-2 rounded-full ${overallStatus.bg}`}>
+                    <OverallStatusIcon className={`w-4 h-4 sm:w-5 sm:h-5 ${overallStatus.color}`} />
+                    <span className={`text-xs sm:text-sm font-medium ${overallStatus.color}`}>
+                      {overallStatus.text}
+                    </span>
+                  </div>
+                  <div className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${getScoreColor(overallScore)}`}>
+                    {overallScore}
+                  </div>
+                  <div className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Overall Score</div>
+                </motion.div>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="space-y-3 sm:space-y-4">
+                <h3 className="font-semibold text-gray-900 dark:text-white text-base sm:text-lg">Quick Stats</h3>
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="text-center p-3 sm:p-4 bg-gray-100 dark:bg-gray-800 rounded-lg sm:rounded-xl"
+                  >
+                    <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{auditData.issues.length}</div>
+                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Issues Found</div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="text-center p-3 sm:p-4 bg-gray-100 dark:bg-gray-800 rounded-lg sm:rounded-xl"
+                  >
+                    <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                      {Math.round((auditData.issues.filter(i => i.priority === 'high').length / auditData.issues.length) * 100)}%
+                    </div>
+                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">High Priority</div>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Tabs Navigation */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex flex-wrap gap-2 justify-center px-2"
+          >
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`inline-flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all duration-200 text-xs sm:text-sm ${
+                    activeTab === tab.id
+                      ? 'bg-blue-600 text-white shadow-lg'
+                      : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700'
+                  }`}
+                >
+                  <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </motion.div>
+
+          {/* Tab Content */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6 sm:space-y-8"
+            >
+              {activeTab === 'overview' && (
+                <div className="space-y-6 sm:space-y-8">
         {/* Score Cards */}
-        <div className="grid grid-responsive-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {Object.entries(scores).map(([key, score]) => {
-            const config = scoreCardConfigs[key as keyof typeof scoreCardConfigs];
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                    {Object.entries(scores).map(([key, score], index) => {
+                      const status = getScoreStatus(score);
+                      const StatusIcon = status.icon;
+                      const icons = { performance: Zap, seo: Eye, security: Shield, accessibility: BarChart3 };
+                      const Icon = icons[key as keyof typeof icons];
+                      
             return (
-              <ScoreCard
+                        <motion.div
                 key={key}
-                title={config.title}
-                score={score}
-                icon={config.icon}
-                color={config.color}
-                description={config.description}
-              />
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.1 * index }}
+                          className="bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-between mb-3 sm:mb-4">
+                            <div className="flex items-center space-x-2 sm:space-x-3">
+                              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h3 className="font-semibold text-gray-900 dark:text-white capitalize text-sm sm:text-base">{key}</h3>
+                                <div className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs ${status.bg}`}>
+                                  <StatusIcon className={`w-3 h-3 ${status.color}`} />
+                                  <span className={status.color}>{status.text}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-center">
+                            <div className={`text-2xl sm:text-3xl font-bold ${getScoreColor(score)}`}>
+                              {score}
+                            </div>
+                            <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">/ 100</div>
+                          </div>
+                        </motion.div>
             );
           })}
         </div>
 
-        {/* Charts and Issues Grid */}
+                  {/* Charts and Issues */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-          {/* Performance Metrics Chart */}
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 p-4 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6">Performance Metrics</h3>
-            <ChartDisplay auditData={auditData} />
+                    <div className="bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 shadow-lg">
+                      <div className="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Gauge className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">Performance Metrics</h3>
+                          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Core Web Vitals & Loading Speed</p>
+                        </div>
+                      </div>
+                      <div className="h-48 sm:h-64 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+                        <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Chart Component</p>
+                      </div>
           </div>
 
-          {/* Issues List */}
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 p-4 sm:p-6">
-            <div className="flex items-center justify-between mb-4 sm:mb-6">
+                    <div className="bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 shadow-lg">
+                      <div className="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-red-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                        </div>
+                        <div className="min-w-0 flex-1">
               <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">Issues Found</h3>
-              <span className="text-sm text-gray-500 dark:text-gray-400">{auditData.issues.length} issues</span>
+                          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{auditData.issues.length} issues detected</p>
+                        </div>
+                      </div>
+                      <div className="space-y-3 sm:space-y-4">
+                        {auditData.issues.slice(0, 3).map((issue, index) => (
+                          <motion.div
+                            key={issue.id}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.1 * index }}
+                            className="p-3 sm:p-4 bg-gray-100 dark:bg-gray-800 rounded-lg"
+                          >
+                            <div className="flex items-start space-x-2 sm:space-x-3">
+                              <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                                issue.priority === 'high' ? 'bg-red-500' : 
+                                issue.priority === 'medium' ? 'bg-yellow-500' : 'bg-blue-500'
+                              }`}></div>
+                              <div className="min-w-0 flex-1">
+                                <h4 className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">{issue.title}</h4>
+                                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">{issue.description}</p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Other tab contents would go here */}
+              {activeTab !== 'overview' && (
+                <div className="bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-800 p-6 sm:p-8 shadow-lg">
+                  <div className="text-center space-y-4">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto">
+                      <Star className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
             </div>
-            <IssueList issues={auditData.issues} />
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">Coming Soon</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Detailed {activeTab} analysis will be available soon.</p>
           </div>
         </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-6 sm:pt-8"
+          >
           <Link
             href="/"
-            className="btn-primary inline-flex items-center justify-center space-x-2"
+              className="inline-flex items-center justify-center space-x-2 bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl text-sm sm:text-base"
           >
-            <RefreshCw className="w-4 h-4" />
+              <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
             <span>New Audit</span>
           </Link>
           <button
             onClick={handleShare}
-            className="btn-secondary inline-flex items-center justify-center space-x-2"
+              className="inline-flex items-center justify-center space-x-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-6 sm:px-8 py-3 sm:py-4 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 border border-gray-200 dark:border-gray-700 text-sm sm:text-base"
           >
-            <Share2 className="w-4 h-4" />
+              <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
             <span>Share Results</span>
           </button>
+            <button
+              onClick={handleCopyResults}
+              className="inline-flex items-center justify-center space-x-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-6 sm:px-8 py-3 sm:py-4 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 border border-gray-200 dark:border-gray-700 text-sm sm:text-base"
+            >
+              <Copy className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span>Copy Report</span>
+            </button>
+          </motion.div>
         </div>
       </div>
-
-      {/* Toast Container */}
-      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
     </div>
   );
 } 

@@ -95,7 +95,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="p-2 sm:p-3 rounded-lg bg-secondary hover:bg-secondary-hover transition-all duration-200 focus-ring touch-target"
+                  className="p-2 sm:p-3 rounded-lg bg-secondary hover:bg-secondary-hover transition-all duration-200 focus-ring touch-target flex items-center justify-center"
                   aria-label={social.name}
                 >
                   <social.icon className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground transition-colors" />
