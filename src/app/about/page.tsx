@@ -65,17 +65,6 @@ export default function AboutPage() {
     }
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6
-      }
-    }
-  };
-
   const techCardVariants = {
     hidden: { opacity: 0, scale: 0.8, y: 30 },
     visible: {
@@ -652,7 +641,7 @@ export default function AboutPage() {
                 viewport={{ once: true, amount: 0.3 }}
                 className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-border shadow-xl h-full"
               >
-                <h4 className="font-semibold text-foreground mb-4">Let's Connect</h4>
+                <h4 className="font-semibold text-foreground mb-4">Let&apos;s Connect</h4>
                 <div className="flex flex-wrap gap-3 flex-grow">
                 <motion.a
                   href="https://github.com"

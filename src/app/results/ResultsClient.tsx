@@ -13,11 +13,9 @@ import {
   Clock,
   Smartphone,
   Monitor,
-  TrendingUp,
   AlertTriangle,
   CheckCircle,
   XCircle,
-  Info,
   Zap,
   Eye,
   Shield,
@@ -26,9 +24,7 @@ import {
   Target,
   Gauge,
   AlertCircle,
-  Star,
-  Download,
-  ExternalLink
+  Star
 } from "lucide-react";
 
 // Define the audit result interface
@@ -326,7 +322,7 @@ Generated: ${new Date(timestamp).toLocaleString()}
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">Audit Results</h1>
             </div>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm sm:text-base lg:text-lg px-4">
-              Comprehensive analysis of your website's performance, SEO, security, and accessibility
+              Comprehensive analysis of your website&apos;s performance, SEO, security, and accessibility
             </p>
           </motion.div>
 

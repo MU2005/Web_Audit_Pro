@@ -13,9 +13,7 @@ import {
   User,
   MessageSquare,
   Globe,
-  Clock,
-  MapPin,
-  Phone
+  Clock
 } from "lucide-react";
 
 export default function ContactPage() {
@@ -400,7 +398,7 @@ export default function ContactPage() {
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.2 }}
                 >
-                  {socialLinks.map((social, index) => (
+                  {socialLinks.map((social) => (
                     <motion.a
                       key={social.name}
                       href={social.href}
