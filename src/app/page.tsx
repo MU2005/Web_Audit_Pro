@@ -12,11 +12,8 @@ import {
   Clock,
   BarChart3,
   ChevronDown,
-  Users,
-  Target,
   Sparkles,
-  ShieldCheck,
-  Zap as Lightning
+  ShieldCheck
 } from "lucide-react";
 import { URLInputForm } from "../components/forms";
 import { useState } from "react";
