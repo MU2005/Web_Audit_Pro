@@ -13,8 +13,6 @@ import {
   BarChart3,
   ChevronDown,
   Sparkles,
-  ShieldCheck,
-  Cpu,
   Database,
   Key,
   PieChart
