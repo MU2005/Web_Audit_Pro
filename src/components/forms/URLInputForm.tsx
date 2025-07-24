@@ -8,14 +8,22 @@ import {
   CheckCircle, 
   AlertCircle,
   Loader2,
+  Globe,
+  TrendingUp,
+  Shield,
+  Eye,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import ProgressSteps from "../ui/ProgressSteps";
 
 export default function URLInputForm() {
   const [url, setUrl] = useState("");
+  const [device, setDevice] = useState<"mobile" | "desktop">("desktop");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [isValid, setIsValid] = useState(false);
+  const [currentStep, setCurrentStep] = useState<string>("");
+  const [showProgress, setShowProgress] = useState(false);
   const router = useRouter();
 
   const sampleSites = [
@@ -23,6 +31,37 @@ export default function URLInputForm() {
     { name: "GitHub", url: "github.com", description: "Code repository" },
     { name: "Stack Overflow", url: "stackoverflow.com", description: "Developer Q&A" },
     { name: "MDN Web Docs", url: "developer.mozilla.org", description: "Web documentation" },
+  ];
+
+  const progressSteps = [
+    {
+      id: "connecting",
+      title: "Connecting",
+      description: "Establishing connection to PageSpeed API",
+      icon: Globe,
+      color: "from-blue-500 to-cyan-500"
+    },
+    {
+      id: "analyzing",
+      title: "Analyzing",
+      description: "Running comprehensive performance analysis",
+      icon: TrendingUp,
+      color: "from-green-500 to-emerald-500"
+    },
+    {
+      id: "processing",
+      title: "Processing",
+      description: "Processing results and generating insights",
+      icon: Shield,
+      color: "from-purple-500 to-indigo-500"
+    },
+    {
+      id: "completing",
+      title: "Completing",
+      description: "Finalizing audit and preparing results",
+      icon: Eye,
+      color: "from-orange-500 to-red-500"
+    }
   ];
 
   const validateUrl = (input: string) => {
@@ -83,18 +122,51 @@ export default function URLInputForm() {
 
     setIsLoading(true);
     setError("");
+    setShowProgress(true);
 
     try {
       // Normalize URL
       const normalizedUrl = url.trim().startsWith('http') ? url.trim() : `https://${url.trim()}`;
       
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Progress step 1: Connecting
+      setCurrentStep("connecting");
+      await new Promise(resolve => setTimeout(resolve, 800));
       
-      // Navigate to results page with URL parameter
-      router.push(`/results?url=${encodeURIComponent(normalizedUrl)}`);
-    } catch {
-      setError("Failed to start audit. Please try again.");
+      // Progress step 2: Analyzing
+      setCurrentStep("analyzing");
+      
+      // Call our API
+      const response = await fetch('/api/audit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: normalizedUrl,
+          device: device
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to start audit');
+      }
+
+      const data = await response.json();
+      
+      // Progress step 3: Processing
+      setCurrentStep("processing");
+      await new Promise(resolve => setTimeout(resolve, 600));
+      
+      // Progress step 4: Completing
+      setCurrentStep("completing");
+      await new Promise(resolve => setTimeout(resolve, 400));
+      
+      // Navigate to results page with audit ID
+      router.push(`/results?auditId=${data.data.auditId}`);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Failed to start audit. Please try again.");
+      setShowProgress(false);
     } finally {
       setIsLoading(false);
     }
@@ -102,6 +174,20 @@ export default function URLInputForm() {
 
   return (
     <div className="max-w-2xl mx-auto">
+      {/* Progress Steps */}
+      <AnimatePresence>
+        {showProgress && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="mb-8"
+          >
+            <ProgressSteps currentStep={currentStep} steps={progressSteps} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <motion.form
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -212,8 +298,38 @@ export default function URLInputForm() {
             </div>
           </div>
 
+          {/* Device Selector */}
+          <div className="px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-medium text-muted-foreground">Device Type:</span>
+              <div className="flex bg-secondary rounded-lg p-1">
+                <button
+                  type="button"
+                  onClick={() => setDevice("desktop")}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                    device === "desktop"
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Desktop
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDevice("mobile")}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                    device === "mobile"
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Mobile
+                </button>
+            </div>
+          </div>
+
           {/* Submit Button - Mobile Only */}
-          <div className="lg:hidden px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="lg:hidden">
             <motion.button
               type="submit"
               disabled={!isValid || isLoading}
@@ -237,6 +353,7 @@ export default function URLInputForm() {
                 </>
               )}
             </motion.button>
+            </div>
           </div>
         </div>
 

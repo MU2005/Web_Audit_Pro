@@ -1,27 +1,13 @@
-import { Globe, Monitor, Clock, TrendingUp } from "lucide-react";
-import Link from "next/link";
-
-interface AuditScores {
-  performance: number;
-  seo: number;
-  security: number;
-  accessibility: number;
-}
-
-interface Audit {
-  id: string;
-  url: string;
-  device: string;
-  timestamp: string;
-  scores: AuditScores;
-  status: string;
-}
+import { Globe, Monitor, Clock, TrendingUp, Trash2, Eye } from "lucide-react";
+import { AuditResult } from "../../lib/types";
 
 interface HistoryCardProps {
-  audit: Audit;
+  audit: AuditResult;
+  onView: () => void;
+  onDelete: () => void;
 }
 
-export default function HistoryCard({ audit }: HistoryCardProps) {
+export default function HistoryCard({ audit, onView, onDelete }: HistoryCardProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -32,7 +18,7 @@ export default function HistoryCard({ audit }: HistoryCardProps) {
     });
   };
 
-  const getAverageScore = (scores: AuditScores) => {
+  const getAverageScore = (scores: AuditResult['scores']) => {
     const values = Object.values(scores);
     return Math.round(values.reduce((a, b) => a + b, 0) / values.length);
   };
@@ -44,8 +30,7 @@ export default function HistoryCard({ audit }: HistoryCardProps) {
   };
 
   return (
-    <Link href={`/results?id=${audit.id}`}>
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow cursor-pointer">
+    <div className="bg-card rounded-xl border border-border shadow-lg p-6 hover:shadow-xl transition-all duration-300">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
@@ -53,10 +38,10 @@ export default function HistoryCard({ audit }: HistoryCardProps) {
               <Globe className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white truncate max-w-48">
+            <h3 className="font-semibold text-foreground truncate max-w-48">
                 {audit.url}
               </h3>
-              <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Monitor className="w-4 h-4" />
                 <span className="capitalize">{audit.device}</span>
               </div>
@@ -64,7 +49,7 @@ export default function HistoryCard({ audit }: HistoryCardProps) {
           </div>
           
           <div className="text-right">
-            <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center space-x-1">
+          <div className="text-sm text-muted-foreground flex items-center space-x-1">
               <Clock className="w-4 h-4" />
               <span>{formatDate(audit.timestamp)}</span>
             </div>
@@ -81,54 +66,62 @@ export default function HistoryCard({ audit }: HistoryCardProps) {
         {/* Average Score */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Average Score</span>
-            <TrendingUp className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+          <span className="text-sm font-medium text-foreground">Average Score</span>
+          <TrendingUp className="w-4 h-4 text-muted-foreground" />
           </div>
           <div className="text-2xl font-bold">
             <span className={getScoreColor(getAverageScore(audit.scores))}>
               {getAverageScore(audit.scores)}
             </span>
-            <span className="text-gray-400 dark:text-gray-500 text-lg">/100</span>
+          <span className="text-muted-foreground text-lg">/100</span>
           </div>
         </div>
 
         {/* Score Breakdown */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="text-center p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Performance</div>
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="text-center p-2 bg-secondary/50 rounded-lg">
+          <div className="text-sm text-muted-foreground">Performance</div>
             <div className={`font-semibold ${getScoreColor(audit.scores.performance)}`}>
               {audit.scores.performance}
             </div>
           </div>
-          <div className="text-center p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <div className="text-sm text-gray-600 dark:text-gray-400">SEO</div>
+        <div className="text-center p-2 bg-secondary/50 rounded-lg">
+          <div className="text-sm text-muted-foreground">SEO</div>
             <div className={`font-semibold ${getScoreColor(audit.scores.seo)}`}>
               {audit.scores.seo}
             </div>
           </div>
-          <div className="text-center p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Security</div>
-            <div className={`font-semibold ${getScoreColor(audit.scores.security)}`}>
-              {audit.scores.security}
-            </div>
+        <div className="text-center p-2 bg-secondary/50 rounded-lg">
+          <div className="text-sm text-muted-foreground">Best Practices</div>
+          <div className={`font-semibold ${getScoreColor(audit.scores.bestPractices)}`}>
+            {audit.scores.bestPractices}
           </div>
-          <div className="text-center p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Accessibility</div>
+        </div>
+        <div className="text-center p-2 bg-secondary/50 rounded-lg">
+          <div className="text-sm text-muted-foreground">Accessibility</div>
             <div className={`font-semibold ${getScoreColor(audit.scores.accessibility)}`}>
               {audit.scores.accessibility}
             </div>
           </div>
         </div>
 
-        {/* View Details */}
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-          <div className="text-center">
-            <span className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium">
-              View Details →
-            </span>
-          </div>
-        </div>
+      {/* Actions */}
+      <div className="flex items-center justify-between pt-4 border-t border-border">
+        <button
+          onClick={onView}
+          className="flex items-center space-x-2 text-sm text-primary hover:text-primary/80 font-medium transition-colors"
+        >
+          <Eye className="w-4 h-4" />
+          <span>View Details</span>
+        </button>
+        <button
+          onClick={onDelete}
+          className="flex items-center space-x-2 text-sm text-red-500 hover:text-red-600 font-medium transition-colors"
+        >
+          <Trash2 className="w-4 h-4" />
+          <span>Delete</span>
+        </button>
       </div>
-    </Link>
+    </div>
   );
 } 

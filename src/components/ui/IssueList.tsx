@@ -70,20 +70,20 @@ export default function IssueList({ issues, title = "Issues Found", className = 
       case "accessibility":
         return "from-purple-500 to-indigo-500";
       default:
-        return "from-gray-500 to-gray-600";
+        return "from-slate-500 to-slate-600";
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
-        return "bg-error/10 text-error border-error/20";
+        return "bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800";
       case "medium":
-        return "bg-warning/10 text-warning border-warning/20";
+        return "bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800";
       case "low":
-        return "bg-info/10 text-info border-info/20";
+        return "bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800";
       default:
-        return "bg-muted text-muted-foreground border-border";
+        return "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700";
     }
   };
 
@@ -103,13 +103,13 @@ export default function IssueList({ issues, title = "Issues Found", className = 
   const getTypeColor = (type: string) => {
     switch (type) {
       case "error":
-        return "text-error";
+        return "text-red-600 dark:text-red-400";
       case "warning":
-        return "text-warning";
+        return "text-yellow-600 dark:text-yellow-400";
       case "info":
-        return "text-info";
+        return "text-blue-600 dark:text-blue-400";
       default:
-        return "text-muted-foreground";
+        return "text-slate-600 dark:text-slate-400";
     }
   };
 
@@ -128,10 +128,10 @@ export default function IssueList({ issues, title = "Issues Found", className = 
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h3 className="text-xl font-semibold text-foreground">{title}</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="text-xl lg:text-2xl font-bold text-slate-900 dark:text-white">{title}</h3>
+          <p className="text-sm lg:text-base text-slate-600 dark:text-slate-400 mt-1">
             {filteredIssues.length} issue{filteredIssues.length !== 1 ? 's' : ''} found
           </p>
         </div>
@@ -145,14 +145,14 @@ export default function IssueList({ issues, title = "Issues Found", className = 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setActiveFilter(filter.id)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+            className={`px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
               activeFilter === filter.id
-                ? "bg-primary text-white shadow-lg"
-                : "bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary-hover"
+                ? "bg-blue-600 text-white shadow-lg"
+                : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
             }`}
           >
             {filter.label}
-            <span className="ml-2 px-2 py-0.5 bg-white/20 rounded-full text-xs">
+            <span className="ml-2 px-2 py-0.5 bg-white/20 dark:bg-black/20 rounded-full text-xs">
               {filter.count}
             </span>
           </motion.button>
@@ -174,32 +174,34 @@ export default function IssueList({ issues, title = "Issues Found", className = 
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-card rounded-xl border border-border hover:border-primary/20 transition-all duration-300"
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 hover:shadow-lg"
               >
                 {/* Issue Header */}
                 <div
-                  className="p-4 cursor-pointer"
+                  className="p-4 lg:p-6 cursor-pointer"
                   onClick={() => toggleIssue(issue.id)}
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-3 lg:space-x-4">
                       {/* Category Icon */}
-                      <div className={`w-10 h-10 bg-gradient-to-r ${getCategoryColor(issue.category)} rounded-lg flex items-center justify-center`}>
-                        <CategoryIcon className="w-5 h-5 text-white" />
+                      <div className={`w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-r ${getCategoryColor(issue.category)} rounded-xl flex items-center justify-center shadow-lg`}>
+                        <CategoryIcon className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
                       </div>
 
                       {/* Issue Info */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <TypeIcon className={`w-4 h-4 ${getTypeColor(issue.type)}`} />
-                          <h4 className="font-medium text-foreground truncate">
-                            {issue.title}
-                          </h4>
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getPriorityColor(issue.priority)}`}>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                          <div className="flex items-center space-x-2">
+                            <TypeIcon className={`w-4 h-4 ${getTypeColor(issue.type)}`} />
+                            <h4 className="font-semibold text-slate-900 dark:text-white text-sm lg:text-base truncate">
+                              {issue.title}
+                            </h4>
+                          </div>
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getPriorityColor(issue.priority)}`}>
                             {issue.priority}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground line-clamp-1">
+                        <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
                           {issue.description}
                         </p>
                       </div>
@@ -208,8 +210,9 @@ export default function IssueList({ issues, title = "Issues Found", className = 
                       <motion.div
                         animate={{ rotate: isExpanded ? 90 : 0 }}
                         transition={{ duration: 0.2 }}
+                        className="flex-shrink-0"
                       >
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="w-5 h-5 text-slate-500 dark:text-slate-400" />
                       </motion.div>
                     </div>
                   </div>
@@ -225,23 +228,29 @@ export default function IssueList({ issues, title = "Issues Found", className = 
                       transition={{ duration: 0.3 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-4 pb-4 space-y-4">
-                        <div className="pt-4 border-t border-border">
-                          <p className="text-sm text-muted-foreground mb-3">
+                      <div className="px-4 lg:px-6 pb-4 lg:pb-6 space-y-4">
+                        <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
+                          <p className="text-sm lg:text-base text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
                             {issue.description}
                           </p>
                           
                           {issue.impact && (
-                            <div className="mb-3">
-                              <h5 className="text-sm font-medium text-foreground mb-1">Impact</h5>
-                              <p className="text-sm text-muted-foreground">{issue.impact}</p>
+                            <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
+                              <h5 className="text-sm font-semibold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                                <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+                                Impact
+                              </h5>
+                              <p className="text-sm text-slate-700 dark:text-slate-300">{issue.impact}</p>
                             </div>
                           )}
                           
                           {issue.suggestion && (
-                            <div>
-                              <h5 className="text-sm font-medium text-foreground mb-1">Suggestion</h5>
-                              <p className="text-sm text-muted-foreground">{issue.suggestion}</p>
+                            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
+                              <h5 className="text-sm font-semibold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                                <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                Suggestion
+                              </h5>
+                              <p className="text-sm text-slate-700 dark:text-slate-300">{issue.suggestion}</p>
                             </div>
                           )}
                         </div>
