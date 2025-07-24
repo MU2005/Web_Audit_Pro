@@ -134,6 +134,25 @@ export class StorageManager {
     }
   }
 
+  // Delete specific audit
+  deleteAudit(auditId: string): void {
+    try {
+      // Remove from memory storage
+      delete this.memoryStorage[auditId];
+      
+      // Also remove from localStorage if available
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        const history = this.getAuditHistory();
+        delete history[auditId];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+      }
+      
+      console.log(`Deleted audit: ${auditId}`);
+    } catch (error) {
+      console.error('Failed to delete audit:', error);
+    }
+  }
+
   // Clear all audit history
   clearHistory(): void {
     try {

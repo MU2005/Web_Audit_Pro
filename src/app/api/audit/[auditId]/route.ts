@@ -4,10 +4,10 @@ import { ApiResponse } from '../../../../lib/types';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { auditId: string } }
+  { params }: { params: Promise<{ auditId: string }> }
 ) {
   try {
-    const { auditId } = params;
+    const { auditId } = await params;
 
     console.log(`Looking for audit: ${auditId}`);
 
@@ -47,10 +47,10 @@ export async function GET(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { auditId: string } }
+  { params }: { params: Promise<{ auditId: string }> }
 ) {
   try {
-    const { auditId } = params;
+    const { auditId } = await params;
 
     if (!auditId) {
       return NextResponse.json<ApiResponse>({
@@ -70,11 +70,8 @@ export async function DELETE(
       }, { status: 404 });
     }
 
-    // Remove audit from history
-    delete history[auditId];
-    
-    // Save updated history
-    localStorage.setItem('webaudit_history', JSON.stringify(history));
+    // Delete audit using storage manager
+    storageManager.deleteAudit(auditId);
 
     return NextResponse.json<ApiResponse>({
       success: true,

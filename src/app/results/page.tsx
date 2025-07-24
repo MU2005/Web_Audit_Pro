@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -29,7 +29,7 @@ import { ScoreCard } from "../../components/cards";
 import { ChartDisplay } from "../../components/charts";
 import { IssueList } from "../../components/ui";
 
-export default function ResultsPage() {
+function ResultsPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [auditResult, setAuditResult] = useState<AuditResult | null>(null);
@@ -659,4 +659,22 @@ export default function ResultsPage() {
       </div>
     </div>
   );
-} 
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="text-center max-w-sm mx-auto">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Loading...</h2>
+          <p className="text-slate-600 dark:text-slate-400">Preparing your audit results</p>
+        </div>
+      </div>
+    }>
+      <ResultsPageContent />
+    </Suspense>
+  );
+}
