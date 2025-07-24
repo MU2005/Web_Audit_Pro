@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowLeft, 
   Share2, 
-  Download, 
   RefreshCw, 
   TrendingUp, 
   Shield, 
@@ -16,20 +15,13 @@ import {
   Clock,
   BarChart3,
   AlertTriangle,
-  CheckCircle,
   XCircle,
-  Info,
   Smartphone,
   Monitor,
-  ExternalLink,
   Copy,
   Check,
   Activity,
-  Target,
-  Gauge,
-  Award,
   TrendingDown,
-  Lightbulb,
   AlertCircle
 } from "lucide-react";
 import { AuditResult } from "../../lib/types";
@@ -90,7 +82,7 @@ export default function ResultsPage() {
           text: `Check out the performance audit results for ${auditResult.url}`,
           url: window.location.href,
         });
-      } catch (err) {
+      } catch {
         console.log('Share cancelled');
       }
     } else {
@@ -656,7 +648,7 @@ export default function ResultsPage() {
                     ...issue,
                     priority: issue.impact,
                     type: issue.impact === 'high' ? 'error' : issue.impact === 'medium' ? 'warning' : 'info',
-                    category: issue.category === 'best-practices' ? 'security' : issue.category as any
+                    category: issue.category === 'best-practices' ? 'security' : issue.category as 'performance' | 'accessibility' | 'seo' | 'security'
                   }))} />
                 </div>
                 </motion.div>

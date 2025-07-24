@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, Clock, Zap, TrendingUp, Shield, Eye } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
 interface ProgressStep {
   id: string;
@@ -23,7 +23,7 @@ export default function ProgressSteps({ currentStep, steps }: ProgressStepsProps
         {steps.map((step, index) => {
           const isActive = step.id === currentStep;
           const isCompleted = steps.findIndex(s => s.id === currentStep) > index;
-          const isUpcoming = steps.findIndex(s => s.id === currentStep) < index;
+          // const isUpcoming = steps.findIndex(s => s.id === currentStep) < index;
 
           return (
             <div key={step.id} className="flex items-center">

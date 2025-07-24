@@ -132,7 +132,7 @@ export class PageSpeedClient {
     };
   }
 
-  private extractIssues(ruleResults: any): AuditResult['issues'] {
+  private extractIssues(ruleResults: Record<string, unknown>): AuditResult['issues'] {
     const issues: AuditResult['issues'] = [];
 
     if (!ruleResults || typeof ruleResults !== 'object') {
@@ -140,12 +140,14 @@ export class PageSpeedClient {
     }
 
     for (const [ruleId, rule] of Object.entries(ruleResults)) {
-      const ruleData = rule as any;
-      if (ruleData && typeof ruleData === 'object' && ruleData.ruleImpact > 0) {
+      const ruleData = rule as Record<string, unknown>;
+      const ruleImpact = typeof ruleData.ruleImpact === 'number' ? ruleData.ruleImpact : 0;
+      
+      if (ruleData && typeof ruleData === 'object' && ruleImpact > 0) {
         // Determine impact level based on rule impact
         let impact: 'high' | 'medium' | 'low' = 'low';
-        if (ruleData.ruleImpact > 10) impact = 'high';
-        else if (ruleData.ruleImpact > 3) impact = 'medium';
+        if (ruleImpact > 10) impact = 'high';
+        else if (ruleImpact > 3) impact = 'medium';
 
         // Determine category based on rule groups
         let category: 'performance' | 'accessibility' | 'seo' | 'best-practices' = 'performance';
@@ -157,8 +159,8 @@ export class PageSpeedClient {
 
         issues.push({
           id: ruleId,
-          title: ruleData.localizedRuleName || 'Performance Issue',
-          description: ruleData.summary || 'Performance optimization needed',
+          title: (ruleData.localizedRuleName as string) || 'Performance Issue',
+          description: (ruleData.summary as string) || 'Performance optimization needed',
           impact,
           category,
         });

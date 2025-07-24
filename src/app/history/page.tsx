@@ -7,15 +7,9 @@ import {
   Clock, 
   Globe, 
   BarChart3, 
-  Zap, 
-  Eye, 
-  Shield, 
   AlertTriangle,
   Search,
   Filter,
-  Calendar,
-  ArrowRight,
-  Trash2,
   RefreshCw
 } from "lucide-react";
 import { useRouter } from "next/navigation";

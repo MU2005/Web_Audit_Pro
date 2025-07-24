@@ -48,13 +48,15 @@ interface ChartDisplayProps {
       totalBlockingTime: number;
     };
   };
-  chartType?: 'progress' | 'analytics' | 'performance' | 'overview';
+  chartType?: 'progress' | 'analytics' | 'performance' | 'radar' | 'bar' | 'line' | 'doughnut' | 'polar' | 'overview';
 }
 
 const chartTabs = [
   { key: 'progress', label: 'Progress Rings', icon: '🎯' },
-  { key: 'bar', label: 'Web Vitals', icon: '⚡' },
-  { key: 'line', label: 'Trends', icon: '📈' },
+  { key: 'analytics', label: 'Analytics', icon: '📊' },
+  { key: 'performance', label: 'Performance', icon: '⚡' },
+  { key: 'bar', label: 'Web Vitals', icon: '📈' },
+  { key: 'line', label: 'Trends', icon: '📉' },
   { key: 'doughnut', label: 'Distribution', icon: '🥧' },
   { key: 'polar', label: 'Overview', icon: '🌟' },
   { key: 'radar', label: 'Radar', icon: '🕷️' },
@@ -138,7 +140,22 @@ const ProgressRing = ({ score, label, color, size = 120 }: {
 };
 
 // Analytics Heatmap Component
-const AnalyticsHeatmap = ({ auditData }: { auditData: any }) => {
+const AnalyticsHeatmap = ({ auditData }: { 
+  auditData: {
+    scores: {
+      performance: number;
+      accessibility: number;
+      security: number;
+      seo: number;
+    };
+    metrics: {
+      firstContentfulPaint: number;
+      largestContentfulPaint: number;
+      cumulativeLayoutShift: number;
+      totalBlockingTime: number;
+    };
+  };
+}) => {
   const metrics = [
     { name: 'Performance', value: auditData.scores.performance, color: 'from-blue-500 to-cyan-500' },
     { name: 'Accessibility', value: auditData.scores.accessibility, color: 'from-green-500 to-emerald-500' },
